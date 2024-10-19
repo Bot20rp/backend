@@ -6,14 +6,16 @@ dotenv.config({ path: '.env' });
 
 // Crear la conexión a la base de datos
 export const db = new Sequelize(
-  process.env.DB_NAME || 'Licoreria',     // Valor por defecto para el nombre de la base de datos
-  process.env.DB_USER || 'root',          // Valor por defecto para el usuario
-  process.env.DB_PASSWORD || '',          // Valor por defecto para la contraseña
+  process.env.DB_NAME || 'Licoreria',
+  process.env.DB_USER || 'root',
+  process.env.DB_PASSWORD || '',
   {
-    host: process.env.DB_HOST || 'localhost',  // Valor por defecto para el host
-    port: process.env.DB_PORT || 3306,         // Valor por defecto para el puerto
+    host: process.env.DB_HOST || 'localhost',
+    port: process.env.DB_PORT || 3306,
     dialect: 'mysql',
-    
+    dialectOptions: {
+      connectTimeout: 60000,  // Aumenta el tiempo de espera a 60 segundos
+    },
     define: {
       timestamps: false
     },
