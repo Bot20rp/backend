@@ -15,7 +15,7 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://licoreriabbunker.netlify.app',
+    origin: 'https://glittery-sable-f4b066.netlify.app',
     credentials:true
 }
 ));
