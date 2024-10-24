@@ -15,12 +15,12 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://deft-druid-9890a5.netlify.app',
+    origin: 'https://eclectic-fox-653ba4.netlify.app',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
   }));
-  
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
