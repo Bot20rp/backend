@@ -32,11 +32,15 @@ export const login = async (req, res) => {
 
         // Contraseña correcta, generar token
         const token = await createAccesToken({id: existUser.UsuarioID});
-        res.cookie('token', token, {
-            httpOnly: true,
-            secure: true,   // Solo para HTTPS
-            sameSite: 'None',  // Permite compartir cookies entre dominios
-          });
+        res.cookie("token",token);
+        res.json({
+            message: "usuario creado sucess",
+            user: {
+                id: existUser.UsuarioID,
+                email: existUser.Correo,
+                rol: existUser.Rol.Nombre
+            }
+        })
         //registrar en la  bitacora
         const message="inicion Sesion"
         const UsuarioID=existUser.UsuarioID
