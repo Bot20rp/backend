@@ -15,7 +15,7 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://gleaming-griffin-d5cc87.netlify.app',
+    origin: 'https://adorable-blancmange-075530.netlify.app',
     credentials:true,
 }
 ));
