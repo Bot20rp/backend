@@ -15,7 +15,7 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://glittery-sable-f4b066.netlify.app',
+    origin: 'https://grand-lokum-04ba2f.netlify.app/',
     credentials:true,
     secure: true, // Asegúrate de que esté en true si estás en producción
     sameSite: 'None' // Necesario para cookies entre sitios
