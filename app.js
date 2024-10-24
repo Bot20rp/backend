@@ -17,8 +17,6 @@ rundb();
 app.use(cors({
     origin: 'https://grand-lokum-04ba2f.netlify.app',
     credentials:true,
-    secure: true, // Asegúrate de que esté en true si estás en producción
-    sameSite: 'None' // Necesario para cookies entre sitios
 }
 ));
 app.use(morgan('dev'));
