@@ -16,7 +16,9 @@ rundb();
 
 app.use(cors({
     origin: 'https://glittery-sable-f4b066.netlify.app',
-    credentials:true
+    credentials:true,
+    secure: true, // Asegúrate de que esté en true si estás en producción
+    sameSite: 'None' // Necesario para cookies entre sitios
 }
 ));
 app.use(morgan('dev'));
