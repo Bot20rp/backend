@@ -15,7 +15,7 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://grand-lokum-04ba2f.netlify.app',
+    origin: 'https://gleaming-griffin-d5cc87.netlify.app',
     credentials:true,
 }
 ));
