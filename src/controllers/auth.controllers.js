@@ -9,14 +9,14 @@ import { createBitacora } from './bitacora.controllers.js';
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
-    
+
     try {
-        const existUser = await usuario.findOne({ 
+        const existUser = await usuario.findOne({
             where: { Correo: email },
             attributes: ['UsuarioID', 'Correo', 'Contrasena'],
             include: { model: Rol, attributes: ['Nombre'] }  // Cambia 'Nombre' a ['Nombre']
         });
-        
+
         if (!existUser) {
             return res.status(401).json({ mensaje: 'Ese usuario no existe' });
         }
@@ -31,13 +31,15 @@ export const login = async (req, res) => {
         }
 
         // Contraseña correcta, generar token
-        const token = await createAccesToken({id: existUser.UsuarioID});
-        res.cookie("token",token, {
+        const token = await createAccesToken({ id: existUser.UsuarioID });
+        // En tu función de inicio de sesión
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: true,   // Solo para HTTPS
-            sameSite: 'None',  // Permite compartir cookies entre dominios
+            secure: process.env.NODE_ENV === "production", // Solo en producción
+            sameSite: 'Lax', // Cambia según sea necesario
             maxAge: 24 * 60 * 60 * 1000, // Expira en 1 día
-          });
+        });
+
         res.json({
             message: "usuario creado sucess",
             user: {
@@ -47,47 +49,46 @@ export const login = async (req, res) => {
             }
         })
         //registrar en la  bitacora
-        const message="inicion Sesion"
-        const UsuarioID=existUser.UsuarioID
+        const message = "inicion Sesion"
+        const UsuarioID = existUser.UsuarioID
         console.log(req.body)
         // await createBitacora({UsuarioID,message},res);
-        
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ mensaje: 'Error en el servidor' });
     }
 };
 
-export const logout = async (req,res) => {
-    const message="Cerrar Sesion"
-    const UsuarioID=req.user.id;
+export const logout = async (req, res) => {
+    const message = "Cerrar Sesion"
+    const UsuarioID = req.user.id;
     // await createBitacora({UsuarioID,message},res);
     res.cookie("token", "", {
         httpOnly: true,
         secure: true,
         expires: new Date(0),
-      });
-      return res.sendStatus(200);
+    });
+    return res.sendStatus(200);
 }
 
-export const verifyToken = async (req,res) => {
+export const verifyToken = async (req, res) => {
     console.log(req.cookies)
-    const {token} = req.cookies
+    const { token } = req.cookies
 
-    if(!token) return res.status(401).json({message:"nega token"});
+    if (!token) return res.status(401).json({ message: "nega token" });
 
-    jwt.verify(token,process.env.JWT_SECRETO,async (err,user)=>
-        {
-        if(err) return res.status(401).json({message:"nega token"});
-        
-        const existUserToken = await usuario.findOne({ 
+    jwt.verify(token, process.env.JWT_SECRETO, async (err, user) => {
+        if (err) return res.status(401).json({ message: "nega token" });
+
+        const existUserToken = await usuario.findOne({
             where: { UsuarioID: user.id },
             attributes: ['UsuarioID', 'Nombre', 'Contrasena'],
             include: { model: Rol, attributes: ['Nombre'] }  // Cambia 'Nombre' a ['Nombre']
         });
 
         console.log(existUserToken)
-        if(!existUserToken) return res.status(401).json({message:"no hay usuario"});
+        if (!existUserToken) return res.status(401).json({ message: "no hay usuario" });
 
         return res.json({
 
@@ -102,11 +103,11 @@ export const verifyToken = async (req,res) => {
 
 };
 
-export const authenticateToken = async (req,res,next) => {
+export const authenticateToken = async (req, res, next) => {
     console.log(req.cookies)
-    const {token} = req.cookies
+    const { token } = req.cookies
 
-    if(!token) return res.status(401).json({message:"nega token"});
+    if (!token) return res.status(401).json({ message: "nega token" });
     jwt.verify(token, process.env.JWT_SECRETO, (err, user) => {
         if (err) return res.sendStatus(403); // Si hay un error, responde con un 403
         req.user = user; // Almacena la información del usuario en req.user
