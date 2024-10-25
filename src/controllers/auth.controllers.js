@@ -65,47 +65,43 @@ export const logout = async (req,res) => {
       return res.sendStatus(200);
 }
 
-export const verifyToken = async (req,res) => {
-    console.log(req.cookies)
-    const {token} = req.cookies
+export const verifyToken = async (req, res) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Obtiene el token
 
-    if(!token) return res.status(401).json({message:"nega token"});
+    if (!token) return res.status(401).json({ message: "Token no proporcionado" });
 
-    jwt.verify(token,process.env.JWT_SECRETO,async (err,user)=>
-        {
-        if(err) return res.status(401).json({message:"nega token"});
-        
-        const existUserToken = await usuario.findOne({ 
+    jwt.verify(token, process.env.JWT_SECRETO, async (err, user) => {
+        if (err) return res.status(403).json({ message: "Token no válido" });
+
+        const existUserToken = await usuario.findOne({
             where: { UsuarioID: user.id },
             attributes: ['UsuarioID', 'Nombre', 'Contrasena'],
             include: { model: Rol, attributes: ['Nombre'] }  // Cambia 'Nombre' a ['Nombre']
         });
 
-        console.log(existUserToken)
-        if(!existUserToken) return res.status(401).json({message:"no hay usuario"});
+        if (!existUserToken) return res.status(401).json({ message: "Usuario no encontrado" });
 
         return res.json({
-
             user: {
                 id: existUserToken.UsuarioID,
                 email: existUserToken.Nombre,
                 rol: existUserToken.Rol.Nombre
             }
-
-        })
-    })
-
+        });
+    });
 };
 
-export const authenticateToken = async (req,res,next) => {
-    console.log(req.cookies)
-    const {token} = req.cookies
 
-    if(!token) return res.status(401).json({message:"nega token"});
+export const authenticateToken = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1]; // Obtiene el token
+
+    if (!token) return res.status(401).json({ message: "Token no proporcionado" });
+    
     jwt.verify(token, process.env.JWT_SECRETO, (err, user) => {
         if (err) return res.sendStatus(403); // Si hay un error, responde con un 403
         req.user = user; // Almacena la información del usuario en req.user
         next(); // Llama al siguiente middleware
     });
-
 };
