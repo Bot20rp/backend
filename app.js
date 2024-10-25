@@ -16,7 +16,7 @@ const app = express();
 rundb();
 
 app.use(cors({
-    origin: 'https://eclectic-fox-653ba4.netlify.app',
+    origin: '*',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: '*',
