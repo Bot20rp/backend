@@ -49,7 +49,7 @@ export const login = async (req, res) => {
         const message="inicion Sesion"
         const UsuarioID=existUser.UsuarioID
         console.log(req.body)
-        await createBitacora({UsuarioID,message},res);
+        // await createBitacora({UsuarioID,message},res);
         
     } catch (error) {
         console.error(error);
