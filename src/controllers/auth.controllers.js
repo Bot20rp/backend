@@ -36,6 +36,7 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: true,   // Solo para HTTPS
             sameSite: 'None',  // Permite compartir cookies entre dominios
+            maxAge: 24 * 60 * 60 * 1000, // Expira en 1 día
           });
         res.json({
             message: "usuario creado sucess",
