@@ -45,7 +45,7 @@ export const login = async (req, res) => {
         const message="inicion Sesion"
         const UsuarioID=existUser.UsuarioID
         console.log(req.body)
-        // await createBitacora({UsuarioID,message},res);
+        await createBitacora({UsuarioID,message},res);
         
     } catch (error) {
         console.error(error);
@@ -69,7 +69,7 @@ export const verifyToken = async (req, res) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Obtiene el token
 
-    if (!token) return res.status(401).json({ message: "Token no proporcionado" });
+    if (!token) return res.status(401).json({ message: "Token no proporcionado"});
 
     jwt.verify(token, process.env.JWT_SECRETO, async (err, user) => {
         if (err) return res.status(403).json({ message: "Token no válido" });
