@@ -19,7 +19,7 @@ app.use(cors({
     origin: 'https://eclectic-fox-653ba4.netlify.app',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type,Authorization',
+    allowedHeaders: '*',
   }));
 
 app.use(morgan('dev'));
