@@ -34,7 +34,7 @@ export const login = async (req, res) => {
         const token = await createAccesToken({id: existUser.UsuarioID});
         res.cookie("token",token, {
             httpOnly: true,
-            secure: true,   // Solo para HTTPS
+            secure: process.env.NODE_ENV === 'production',   // Solo para HTTPS
             sameSite: 'None',  // Permite compartir cookies entre dominios
             maxAge: 24 * 60 * 60 * 1000, // Expira en 1 día
           });
