@@ -41,7 +41,8 @@ export const getBita=async ()=>{
     try {
         const data=await db.query( `CALL getBita()`); 
         return data;
-    } catch (error) {       
+    } catch (error) {     
+        console.log("no hay nd")  
         throw new Error(`Error al llamar al PA ${error.message}`)
     }
 }
