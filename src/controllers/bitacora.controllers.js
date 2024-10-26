@@ -9,7 +9,7 @@ export const getBitacora=async (req,res)=>{
         res.status(200).json(mostrarLista)
     } catch (error) {
         console.log(error);
-        res.status(500).json({err:error});
+        res.status(500).json({ error: error.message, stack: error.stack });
     }
 } 
 

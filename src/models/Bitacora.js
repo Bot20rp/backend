@@ -40,6 +40,7 @@ const bitacora=db.define('Bitacora',{
 export const getBita=async ()=>{
     try {
         const data=await db.query( `CALL getBita()`); 
+        console.log(data)
         return data;
     } catch (error) {     
         console.log("no hay nd")  
