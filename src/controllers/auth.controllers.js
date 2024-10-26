@@ -56,7 +56,7 @@ export const login = async (req, res) => {
 export const logout = async (req,res) => {
     const message="Cerrar Sesion"
     const UsuarioID=req.user.id;
-    // await createBitacora({UsuarioID,message},res);
+    await createBitacora({UsuarioID,message},res);
     res.cookie("token", "", {
         httpOnly: true,
         secure: true,
