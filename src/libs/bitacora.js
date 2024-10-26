@@ -1,7 +1,7 @@
 export function obtenerHoraActual() {
     const now = new Date();
 
-    const hora = now.toLocaleTimeString('es-ES');
+    const hora = now.toLocaleTimeString('es-BO');
     return `${hora}`;
   }
 
