@@ -1,16 +1,9 @@
-export function obtenerHoraActualBolivia() {
-  // Crear una nueva fecha y ajustarla a la zona horaria de Bolivia (UTC -4)
-  const now = new Date().toLocaleString("es-BO", {
-      timeZone: "America/La_Paz",
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: false  // Formato de 24 horas
-  });
+export function obtenerHoraActual() {
+    const now = new Date();
 
-  return now;
-}
-
+    const hora = now.toLocaleTimeString('es-ES');
+    return `${hora}`;
+  }
 
 export function obtenerFechaactual() {
     const now = new Date();
