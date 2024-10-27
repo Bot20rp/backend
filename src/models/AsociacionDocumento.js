@@ -31,8 +31,14 @@ Empleado.belongsTo(Usuario, {
 });
 
 // Establecer la relación detalleCombo -- entre combo y producto 
+// Relación entre DetalleCombo y Combo
 DetalleCombo.belongsTo(Combo, { foreignKey: 'ComboID' });
+Combo.hasMany(DetalleCombo, { foreignKey: 'ComboID' });
+
+// Relación entre DetalleCombo y Producto
 DetalleCombo.belongsTo(Producto, { foreignKey: 'ProductoID' });
+Producto.hasMany(DetalleCombo, { foreignKey: 'ProductoID' });
+
 
 
 export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto};
