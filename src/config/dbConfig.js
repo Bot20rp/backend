@@ -8,10 +8,10 @@ dotenv.config({ path: '.env' });
 export const db = new Sequelize(
   process.env.DB_NAME || 'Licoreria',
   process.env.DB_USER || 'root',
-  process.env.DB_PASSWORD || '',
+  process.env.DB_PASSWORD || 'rgvxdGFbiNddUAZueOlNJPMhxMXLwazG',
   {
-    host: process.env.DB_HOST || 'localhost',
-    port: process.env.DB_PORT || 3306,
+    host: process.env.DB_HOST || 'junction.proxy.rlwy.net',
+    port: process.env.DB_PORT || 30289,
     dialect: 'mysql',
     dialectOptions: {
       connectTimeout: 60000,  // Aumenta el tiempo de espera a 60 segundos

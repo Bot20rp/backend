@@ -1,0 +1,31 @@
+import { DataTypes } from "sequelize";
+import { db } from "../config/dbConfig.js";
+import Combo from "./Combo.js"; // Asegúrate de importar el modelo Combo
+import Producto from "./Producto.js"; // Asegúrate de importar el modelo Producto
+
+const DetalleCombo = db.define('DetalleCombo', {
+    ComboID: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Combo, // Referencia al modelo Combo
+            key: 'ComboID'
+        },
+        primaryKey: true,
+        allowNull: false
+    },
+    ProductoID: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: Producto, // Referencia al modelo Producto
+            key: 'ProductoID'
+        },
+        primaryKey: true,
+        allowNull: false
+    }
+}, {
+    tableName: 'DetalleCombo',
+    timestamps: false
+});
+
+
+export default DetalleCombo;
