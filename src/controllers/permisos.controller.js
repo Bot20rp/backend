@@ -35,9 +35,10 @@ export const updatePermisos = async (req, res) => {
 
 
 export const updatePermisos2 = async (req, res) => {
+    console.log(req.body)
     try {
         const { privilegios, rol: rolId } = req.body.data;
-
+        
         const updates = privilegios.map(privilegio => ({
             id: privilegio.id,
             Estado: privilegio.Estado === true ? 1 : 0, 
