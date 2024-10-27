@@ -74,8 +74,12 @@ export const getCombos = async (req, res) => {
 
 export const updateCombo = async (req, res) => {
     try {
-        const { id } = req.params; // ID del combo que queremos actualizar
-        const { FechaFin, Estado, Precio } = req.body;
+        const { id, FechaFin, Estado, Precio } = req.body; // Ahora el ID se obtiene del cuerpo de la solicitud
+
+        // Verifica que se proporcione el ID
+        if (!id) {
+            return res.status(400).json({ message: "El ID del combo es requerido." });
+        }
 
         // Crea un objeto vacío y agrega solo los campos que fueron enviados
         const updateData = {};
@@ -83,7 +87,7 @@ export const updateCombo = async (req, res) => {
         if (Estado !== undefined) updateData.Estado = Estado;
         if (Precio !== undefined) updateData.Precio = Precio;
 
-        // Verifica que haya al menos un campo para actualizar
+        // Verifica que haya al menos un campo para actualizar, excluyendo el ID
         if (Object.keys(updateData).length === 0) {
             return res.status(400).json({ message: "No se ha proporcionado ningún campo para actualizar." });
         }
