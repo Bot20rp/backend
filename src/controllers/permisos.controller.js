@@ -40,7 +40,7 @@ export const updatePermisos2 = async (req, res) => {
 
         const updates = privilegios.map(privilegio => ({
             id: privilegio.id,
-            estado: privilegio.estado === true ? 1 : 0, 
+            Estado: privilegio.Estado === true ? 1 : 0, 
         }));
 
         
