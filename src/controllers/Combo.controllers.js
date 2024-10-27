@@ -40,5 +40,35 @@ console.log('Solicitud recibida en /api/combos');
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Error al crear el combo y sus productos.' });
+    }    
+};
+
+export const getCombos = async (req, res) => {
+    try {
+        const combos = await Combo.findAll({
+            include: [
+                {
+                    model: DetalleCombo,
+                    include: [
+                        {
+                            model: Producto,
+                            attributes: ['ProductoID', 'Nombre', 'Precio']
+                        }
+                    ],
+                    attributes: [] // Opcional si solo se desea la información del producto
+                }
+            ],
+            attributes: ['ComboID', 'Descripcion', 'FechaInicio', 'FechaFin', 'Precio', 'Estado']
+        });
+
+        // Verifica si existen combos
+        if (!combos.length) {
+            return res.status(404).json({ message: 'No se encontraron combos.' });
+        }
+
+        return res.status(200).json(combos);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error al obtener los combos.' });
     }
 };
