@@ -11,6 +11,7 @@ import routerEmp from "./src/routes/empleado.routes.js";
 import routerCat from "./src/routes/categoria.routes.js";
 import routerProd from "./src/routes/producto.routes.js";
 import routerBit from "./src/routes/bitacora.routes.js";
+import routerPermi from "./src/routes/permisos.routes.js";
 
 const app = express();
 rundb();
@@ -34,5 +35,7 @@ app.use("/api",routerEmp);
 app.use("/api",routerCat);
 app.use("/api",routerProd);
 app.use("/api",routerBit);
+app.use("/api",routerPermi);
+
 
 export default app;
