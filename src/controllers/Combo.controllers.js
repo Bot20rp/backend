@@ -5,8 +5,8 @@ import Producto from '../models/Producto.js'; // Asegúrate de importar el model
 // Función para insertar un nuevo combo con sus productos
 export const createCombo = async (req, res) => {
     const { Descripcion, FechaInicio, FechaFin, Precio, Estado, productos } = req.body.data;
-    // Dentro de createCombo
-console.log('Solicitud recibida en /api/combos');
+    
+    console.log('Solicitud recibida en /api/combos');
 
     try {
         // Validar que los campos obligatorios estén presentes
@@ -23,10 +23,10 @@ console.log('Solicitud recibida en /api/combos');
             Estado: Estado || 1 // Usa 1 como valor por defecto si no se proporciona
         });
 
-        // Insertar productos en DetalleCombo
-        const detalles = productos.map(productoID => ({
+        const detalles = productos.map(producto => ({
             ComboID: newCombo.ComboID,
-            ProductoID: productoID
+            ProductoID: producto.ProductoID,
+            cantidad: producto.cantidad // cantidad especificada para cada producto
         }));
 
         await DetalleCombo.bulkCreate(detalles);
