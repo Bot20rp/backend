@@ -18,7 +18,7 @@ export const registrarProveedor=async (req,res)=>{
 
 export const getProveedor=async(req,res)=>{
     try{
-        const proveedores= await proveedor.findAll();
+        const proveedores= await proveedor.findAll({where:{Estado:true}})
         res.status(200).json(proveedores);
     }catch(error){
         res.status(500).json({err:error.message})
@@ -78,7 +78,8 @@ export const deleteProveedor = async (req, res) => {
         return res.status(404).json({ msg: "Proveedor no encontrado" });
     }
     try {
-        await proveedor.destroy({ where: { ProveedorID: numericId } });
+        //await proveedor.destroy({ where: { ProveedorID: numericId } });
+        await existProveedor.update({Estado:false})
         res.status(200).json({ msg: "Proveedor eliminado" });
     } catch (error) {
         res.status(500).json({ err: error.message });

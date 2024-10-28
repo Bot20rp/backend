@@ -33,6 +33,9 @@ const usuario = db.define('Usuario', {
     RolID:{
         type:DataTypes.INTEGER,
         allowNull: false
+    },
+    Estado:{
+        type:DataTypes.BOOLEAN
     }
 }, {
     tableName: 'Usuario',

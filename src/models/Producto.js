@@ -37,6 +37,9 @@ const producto= db.define('producto',{
             model:'Categoria',
             Key:'CategoriaID'
         }
+    },
+    Estado:{
+        type:DataTypes.BOOLEAN
     }
 },{
     tableName:'Producto',

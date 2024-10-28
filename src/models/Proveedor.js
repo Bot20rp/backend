@@ -23,6 +23,9 @@ const proveedor=db.define('proveed',{
     },
     Correo:{
         type:DataTypes.STRING
+    },
+    Estado:{
+        type:DataTypes.BOOLEAN
     }
 },{
     tableName: 'Proveedor',

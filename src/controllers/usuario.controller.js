@@ -7,6 +7,7 @@ export const obtenerUsuariosConDetalles= async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({
       attributes: ['UsuarioID', 'Nombre', 'Correo', 'Sexo','FechaNacimiento'], // Incluyendo el UsuarioID
+      where:{Estado:true},
       include: [
         {
           model: DetalleDocumento,
@@ -162,26 +163,31 @@ export const deleteUsuarioG=async (req,res)=>{
   try{
       const infoUser= await Usuario.findByPk(Number(id));
       if(infoUser.RolID==1){
-         await Administrador.destroy({where:{ AdministradorID:infoUser.UsuarioID}});
-         await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-         await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-         await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        //  await Administrador.destroy({where:{ AdministradorID:infoUser.UsuarioID}});
+        //  await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        //  await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+         await infoUser.update({Estado:false})
          return res.status(200).json({msj:"Eliminacion exitosa"})
       }
-      if(infoUser.RolID==3){
-          await Cliente.destroy({where:{ ClienteID:infoUser.UsuarioID}});
-          await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-          await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-          await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-          return res.status(200).json({msj:"Eliminacion exitosa"})
-       }
+
        if(infoUser.RolID==2){
-          await Empleado.destroy({where:{ EmpleadoID:infoUser.UsuarioID}});
-          await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-          await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
-          await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+          // await Empleado.destroy({where:{ EmpleadoID:infoUser.UsuarioID}});
+          // await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+          // await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+          // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+          await infoUser.update({Estado:false})
           return res.status(200).json({msj:"Eliminacion exitosa"})
        }
+
+       if(infoUser.RolID==3){
+        // await Cliente.destroy({where:{ ClienteID:infoUser.UsuarioID}});
+        // await Telefono.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        // await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
+        await infoUser.update({Estado:false})
+        return res.status(200).json({msj:"Eliminacion exitosa"})
+     }
   }catch(error){
       res.status(500).json({err:error.message})
   }
