@@ -3,6 +3,7 @@ import Rol from '../models/Rol.js';
 import Administrador from "../models/Administrador.js";
 import Cliente from '../models/Cliente.js';
 
+
 export const obtenerUsuariosConDetalles= async (req, res) => {
   try {
     const usuarios = await Usuario.findAll({

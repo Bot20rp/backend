@@ -36,4 +36,12 @@ export const obtenerPermisos=async (id)=>{
     }
 }
 
+export const obtenerPermisosXRol=async (id)=>{
+    try{
+        const data=await db.query(`CALL getPrivXRol(${id})`)
+        return data;
+    }catch(error){
+        throw new Error (`Error al llamar el PA ${error.message}`)
+    }
+}
 export default permisos;
