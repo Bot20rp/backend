@@ -4,7 +4,7 @@ import Producto from '../models/Producto.js'; // Asegúrate de importar el model
 
 // Función para insertar un nuevo combo con sus productos
 export const createCombo = async (req, res) => {
-    const { Descripcion, FechaInicio, FechaFin, Precio, Estado, productos } = req.body;
+    const { Descripcion, FechaInicio, FechaFin, Precio, Estado, productos } = req.body.data;
     // Dentro de createCombo
 console.log('Solicitud recibida en /api/combos');
 
