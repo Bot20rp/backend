@@ -21,6 +21,11 @@ const DetalleCombo = db.define('DetalleCombo', {
         },
         primaryKey: true,
         allowNull: false
+    },
+    cantidad: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1 // Valor predeterminado en caso de no especificar cantidad
     }
 }, {
     tableName: 'DetalleCombo',
