@@ -66,7 +66,7 @@ export const updateProveedor=async(req,res)=>{
 
 export const deleteProveedor = async (req, res) => {
     const { id } = req.body; // Extrae el ID del cuerpo de la solicitud
-
+    console.log(req.body)
     // Verifica si el ID se recibió y es un número válido
     const numericId = Number(id);
     if (!id || isNaN(numericId)) {
