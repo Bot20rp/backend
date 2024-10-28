@@ -74,7 +74,7 @@ export const getCombos = async (req, res) => {
 
 export const updateCombo = async (req, res) => {
     try {
-        const { id, FechaFin, Estado, Precio } = req.body; // Ahora el ID se obtiene del cuerpo de la solicitud
+        const { id, FechaFin, Estado, Precio } = req.body.data; // Ahora el ID se obtiene del cuerpo de la solicitud
 
         // Verifica que se proporcione el ID
         if (!id) {
