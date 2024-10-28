@@ -159,7 +159,7 @@ export const updateUsuarioG=async (req,res)=>{
 
 export const deleteUsuarioG=async (req,res)=>{
   console.log(req.body)
-  const {id}=req.body
+  const {id}=req.body.data
   try{
       const infoUser= await Usuario.findByPk(Number(id));
       if(infoUser.RolID==1){
