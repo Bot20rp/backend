@@ -4,8 +4,8 @@ import bcrypt from 'bcryptjs'; // Asegúrate de que este sea el nombre correcto
 import { createAccesToken } from '../libs/tokens.js';
 import jwt from 'jsonwebtoken'
 import Rol from '../models/Rol.js';
-
 import { createBitacora } from './bitacora.controllers.js';
+import { obtenerPermisosXRol } from '../models/Permisos.js';
 
 export const login = async (req, res) => {
     const { email, password } = req.body;
@@ -13,10 +13,10 @@ export const login = async (req, res) => {
     try {
         const existUser = await usuario.findOne({ 
             where: { Correo: email },
-            attributes: ['UsuarioID', 'Correo', 'Contrasena'],
+            attributes: ['UsuarioID', 'Correo', 'Contrasena','RolID'],
             include: { model: Rol, attributes: ['Nombre'] }  // Cambia 'Nombre' a ['Nombre']
         });
-        
+
         if (!existUser) {
             return res.status(401).json({ mensaje: 'Ese usuario no existe' });
         }
@@ -32,13 +32,17 @@ export const login = async (req, res) => {
 
         // Contraseña correcta, generar token
         const token = await createAccesToken({id: existUser.UsuarioID});
+
+        const permisos=await obtenerPermisosXRol(existUser.RolID)
+        console.log(permisos)
         res.json({
             message: "usuario creado sucess",
             token,
             user: {
                 id: existUser.UsuarioID,
                 email: existUser.Correo,
-                rol: existUser.Rol.Nombre
+                rol: existUser.Rol.Nombre,
+                permisos
             }
         })
         //registrar en la  bitacora
@@ -76,18 +80,20 @@ export const verifyToken = async (req, res) => {
 
         const existUserToken = await usuario.findOne({
             where: { UsuarioID: user.id },
-            attributes: ['UsuarioID', 'Nombre', 'Contrasena'],
+            attributes: ['UsuarioID', 'Nombre', 'Contrasena','RolID'],
             include: { model: Rol, attributes: ['Nombre'] }  // Cambia 'Nombre' a ['Nombre']
         });
 
         if (!existUserToken) return res.status(401).json({ message: "Usuario no encontrado" });
-
+        const permisos=await obtenerPermisosXRol(existUserToken.RolID)
         return res.json({
             user: {
                 id: existUserToken.UsuarioID,
                 email: existUserToken.Nombre,
-                rol: existUserToken.Rol.Nombre
+                rol: existUserToken.Rol.Nombre,
+                permisos
             }
+
         });
     });
 };
