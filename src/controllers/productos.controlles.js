@@ -35,7 +35,7 @@ export const updateProducto = async (req, res) => {
 
 export const deleteproducto = async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id } = req.body.data;
         const existProd = producto.findOne({ where: { ProductoID: Number(id) } })
         if (!existProd) {
             return res.status(404).json({ msg: "Producto no encontrado" });
