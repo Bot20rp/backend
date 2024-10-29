@@ -41,7 +41,9 @@ export const deleteproducto = async (req, res) => {
         if (!existProd) {
             return res.status(404).json({ msg: "Producto no encontrado" });
         }
+        console.log("esty aqui");
         await existProd.update({Estado:false})
+        console.log("esty aqui 2");
         res.status(200).json({msg:"Producto eliminado exitosamente"})
     } catch (error) {
 
