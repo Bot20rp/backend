@@ -35,6 +35,7 @@ export const updateProducto = async (req, res) => {
 
 export const deleteproducto = async (req, res) => {
     try {
+        console.log(req.body.data);
         const { id } = req.body.data;
         const existProd = producto.findOne({ where: { ProductoID: Number(id) } })
         if (!existProd) {
