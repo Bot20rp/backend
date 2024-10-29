@@ -35,17 +35,31 @@ export const updateProducto = async (req, res) => {
 
 export const deleteproducto = async (req, res) => {
     try {
+        // Verifica si req.body.data contiene los datos esperados
         console.log(req.body.data);
+        
         const { id } = req.body.data;
-        const existProd = producto.findOne({ where: { ProductoID: Number(id) } })
+        
+        // Encuentra el producto
+        const existProd = await producto.findOne({ where: { ProductoID: Number(id) } });
+        
+        // Si el producto no existe, retorna un error 404
         if (!existProd) {
             return res.status(404).json({ msg: "Producto no encontrado" });
         }
-        console.log("esty aqui");
-        await existProd.update({Estado:false})
-        console.log("esty aqui 2");
-        res.status(200).json({msg:"Producto eliminado exitosamente"})
+        
+        console.log("Producto encontrado, actualizando...");
+        
+        // Actualiza el estado del producto a false (eliminado)
+        await existProd.update({ Estado: false });
+        
+        console.log("Producto actualizado con éxito");
+        
+        // Responde con éxito
+        res.status(200).json({ msg: "Producto eliminado exitosamente" });
     } catch (error) {
-
+        console.error("Error al eliminar el producto:", error);
+        // En caso de error, responde con un código de error 500
+        res.status(500).json({ msg: "Ocurrió un error al intentar eliminar el producto" });
     }
-}
+};
