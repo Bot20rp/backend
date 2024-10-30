@@ -7,8 +7,9 @@ import { diasfaltantes } from "../libs/helpers.js";
 // en el lote entra unicamente un producto 
 export const createLote=async (req,res)=>{
     try {
+        console.log(req.body.data)
         const {arreglo}=req.body.data//[{},{},{}]
-
+        console.log(arreglo)
         for(obj of arreglo){
             const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
             await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad,ProductoID:id})
