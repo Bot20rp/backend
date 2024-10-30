@@ -1,12 +1,7 @@
-import Proveedor from "../models/Proveedor.js";
-import FacturaCompra from "../models/FacturaCompra.js";
-import Almacenamiento from "../models/Almacenamiento.js";
-import { db } from "../config/dbConfig.js"; // Asegúrate de importar correctamente la configuración
-
 export const registrarCompra = async (req, res) => {
-    console.log(req.body.data)
+    console.log(req.body.data);
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
-    
+
     // Obtener ID del administrador desde el token o sesión
     // const administradorID = req.user?.id;
 
@@ -16,8 +11,11 @@ export const registrarCompra = async (req, res) => {
 
     // Iniciar una transacción para asegurar la consistencia
     const t = await db.transaction();
-    
+
     try {
+        // Crear un detalle basado en los productos
+        const detalleProductos = "estatico para prueba:";
+
         // Crear la entrada en FacturaCompra
         const factura = await FacturaCompra.create({
             Fecha,
@@ -26,7 +24,8 @@ export const registrarCompra = async (req, res) => {
             CodigoControl,
             TotalInteres,
             ProveedorID,
-            AdministradorID: 1,
+            AdministradorID: 19, // Reemplazar con administradorID si es necesario
+            Detalle: detalleProductos, // Aquí agregamos el Detalle
         }, { transaction: t });
 
         // Recorrer los productos y crear cada registro en Almacenamiento
@@ -53,4 +52,3 @@ export const registrarCompra = async (req, res) => {
         res.status(500).json({ error: "Error al registrar la compra" });
     }
 };
-
