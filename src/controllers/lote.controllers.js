@@ -7,11 +7,12 @@ import { diasfaltantes } from "../libs/helpers.js";
 // en el lote entra unicamente un producto 
 export const createLote=async (req,res)=>{
     try {
-        const {Nombre,FechaInicio,FechaVencimiento,Cantidad,ProductoID}=req.body
-        if(!Nombre || !FechaInicio ||!FechaVencimiento || !Cantidad || !ProductoID){
-            return  res.status(400).json({ msg: 'Todos los campos son obligatorios'})
+        const {arreglo}=req.body.data//[{},{},{}]
+
+        for(obj of arreglo){
+            const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
+            await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad,ProductoID:id})
         }
-        await Lote.create({Nombre,FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad,ProductoID})
     } catch (error) {
         res.status(500).json({err:error.message})
     }
