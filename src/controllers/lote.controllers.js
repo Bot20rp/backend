@@ -14,6 +14,7 @@ export const createLote=async (req,res)=>{
             const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
             await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad:Number(Cantidad),ProductoID:id})
         }
+        res.status(200).json({msg:'Lote registrado'})
     } catch (error) {
         res.status(500).json({err:error.message})
     }
