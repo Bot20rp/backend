@@ -1,5 +1,10 @@
+import Proveedor from "../models/Proveedor.js";
+import FacturaCompra from "../models/FacturaCompra.js";
+import Almacenamiento from "../models/Almacenamiento.js";
+import { db } from "../config/dbConfig.js"; // Asegúrate de importar correctamente la configuración
+
 export const registrarCompra = async (req, res) => {
-    console.log(req.body.data);
+    console.log(req.body.data)
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
 
     // Obtener ID del administrador desde el token o sesión
@@ -23,9 +28,10 @@ export const registrarCompra = async (req, res) => {
             CodigoDeAutorizacion: CodigoAutorizacion,
             CodigoControl,
             TotalInteres,
+            Total: TotalPagar,   // Insertar TotalPagar en FacturaCompra
             ProveedorID,
-            AdministradorID: 19, // Reemplazar con administradorID si es necesario
-            Detalle: detalleProductos, // Aquí agregamos el Detalle
+            AdministradorID: 19,
+            Detalle: detalleProductos,
         }, { transaction: t });
 
         // Recorrer los productos y crear cada registro en Almacenamiento
