@@ -26,7 +26,7 @@ export const registrarCompra = async (req, res) => {
             CodigoControl,
             TotalInteres,
             ProveedorID,
-            AdministradorID: administradorID,
+            AdministradorID: 1,
         }, { transaction: t });
 
         // Recorrer los productos y crear cada registro en Almacenamiento
