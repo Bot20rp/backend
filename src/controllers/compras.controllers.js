@@ -8,11 +8,11 @@ export const registrarCompra = async (req, res) => {
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
 
     // Obtener ID del administrador desde el token o sesión
-    // const administradorID = req.user?.id;
+    const administradorID = req.user?.id;
 
-    // if (!administradorID) {
-    //     return res.status(401).json({ error: "Administrador no autorizado" });
-    // }
+    if (!administradorID) {
+        return res.status(401).json({ error: "Administrador no autorizado" });
+     }
 
     // Iniciar una transacción para asegurar la consistencia
     const t = await db.transaction();
@@ -30,7 +30,7 @@ export const registrarCompra = async (req, res) => {
             TotalInteres,
             Total: TotalPagar,   // Insertar TotalPagar en FacturaCompra
             ProveedorID,
-            AdministradorID: 19,
+            AdministradorID: administradorID,
             Detalle: detalleProductos,
         }, { transaction: t });
 
