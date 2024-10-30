@@ -4,6 +4,7 @@ import Almacenamiento from "../models/Almacenamiento.js";
 import { db } from "../config/dbConfig.js"; // Asegúrate de importar correctamente la configuración
 
 export const registrarCompra = async (req, res) => {
+    console.log(req.body.data)
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
     
     // Obtener ID del administrador desde el token o sesión
