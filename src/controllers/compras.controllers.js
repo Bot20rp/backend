@@ -1,18 +1,18 @@
 import Proveedor from "../models/Proveedor.js";
 import FacturaCompra from "../models/FacturaCompra.js";
 import Almacenamiento from "../models/Almacenamiento.js";
+import jwt from 'jsonwebtoken';
 import { db } from "../config/dbConfig.js"; // Asegúrate de importar correctamente la configuración
 
 export const registrarCompra = async (req, res) => {
-    console.log(req.body.data)
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
-    
-    // Obtener ID del administrador desde el token o sesión
-    // const administradorID = req.user?.id;
 
-    // if (!administradorID) {
-    //     return res.status(401).json({ error: "Administrador no autorizado" });
-    // }
+    // Obtener ID del administrador desde el token o sesión
+    const administradorID = req.user?.id;
+
+    if (!administradorID) {
+        return res.status(401).json({ error: "Administrador no autorizado" });
+    }
 
     // Iniciar una transacción para asegurar la consistencia
     const t = await db.transaction();
@@ -25,8 +25,9 @@ export const registrarCompra = async (req, res) => {
             CodigoDeAutorizacion: CodigoAutorizacion,
             CodigoControl,
             TotalInteres,
+            Total: TotalPagar,   // Insertar TotalPagar en FacturaCompra
             ProveedorID,
-            AdministradorID: 1,
+            AdministradorID: administradorID, // Insertar ID del administrador
         }, { transaction: t });
 
         // Recorrer los productos y crear cada registro en Almacenamiento
@@ -53,4 +54,3 @@ export const registrarCompra = async (req, res) => {
         res.status(500).json({ error: "Error al registrar la compra" });
     }
 };
-
