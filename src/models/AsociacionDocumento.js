@@ -6,6 +6,9 @@ import Empleado from './Empleado.js';
 import Combo from './Combo.js';
 import DetalleCombo from './DetalleCombo.js';
 import Producto from './Producto.js';
+import facturaCompra from './FacturaCompra.js';
+import almacenamiento from './Almacenamiento.js';
+import proveedor from './Proveedor.js';
 
 
 
@@ -39,6 +42,17 @@ Combo.hasMany(DetalleCombo, { foreignKey: 'ComboID' });
 DetalleCombo.belongsTo(Producto, { foreignKey: 'ProductoID' });
 Producto.hasMany(DetalleCombo, { foreignKey: 'ProductoID' });
 
+// Definir relación entre Proveedor y FacturaCompra
+proveedor.hasMany(facturaCompra, { foreignKey: 'ProveedorID' });
+facturaCompra.belongsTo(proveedor, { foreignKey: 'ProveedorID' });
+
+// Relaciones para la tabla almacenamiento
+facturaCompra.hasMany(almacenamiento, { foreignKey: 'FacturaComID' });
+almacenamiento.belongsTo(facturaCompra, { foreignKey: 'FacturaComID' });
+
+Producto.hasMany(almacenamiento, { foreignKey: 'ProductoID' });
+almacenamiento.belongsTo(Producto, { foreignKey: 'ProductoID' });
 
 
-export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto};
+
+export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto,facturaCompra,almacenamiento,proveedor};

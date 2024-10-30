@@ -13,6 +13,7 @@ import routerProd from "./src/routes/producto.routes.js";
 import routerBit from "./src/routes/bitacora.routes.js";
 import routerCombo from "./src/routes/Combo.routes.js";
 import routerPerm from "./src/routes/permisos.routes.js";
+import routerCompra from "./src/routes/Compras.routes.js"
 
 const app = express();
 rundb();
@@ -38,5 +39,6 @@ app.use("/api",routerProd);
 app.use("/api",routerBit);
 app.use("/api",routerCombo);
 app.use("/api",routerPerm);
+app.use("/api",routerCompra);
 
 export default app;
