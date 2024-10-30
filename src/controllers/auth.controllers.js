@@ -111,3 +111,30 @@ export const authenticateToken = async (req, res, next) => {
         next(); // Llama al siguiente middleware
     });
 };
+
+export const verifyToken1 = async (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) return res.status(401).json({ message: "Token no proporcionado" });
+
+    jwt.verify(token, process.env.JWT_SECRETO, async (err, user) => {
+        if (err) return res.status(403).json({ message: "Token no válido" });
+
+        const existUserToken = await usuario.findOne({
+            where: { UsuarioID: user.id },
+            attributes: ['UsuarioID', 'Nombre', 'Contrasena', 'RolID'],
+            include: { model: Rol, attributes: ['Nombre'] }
+        });
+
+        if (!existUserToken) return res.status(401).json({ message: "Usuario no encontrado" });
+
+        req.user = {
+            id: existUserToken.UsuarioID,
+            rol: existUserToken.Rol.Nombre,
+            permisos: await obtenerPermisosXRol(existUserToken.RolID),
+        };
+
+        next(); // Continúa al siguiente middleware o controlador
+    });
+};
