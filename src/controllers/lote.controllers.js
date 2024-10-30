@@ -12,7 +12,7 @@ export const createLote=async (req,res)=>{
         console.log(arreglo)
         for(obj of arreglo){
             const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
-            await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad,ProductoID:id})
+            await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad:Number(Cantidad),ProductoID:id})
         }
     } catch (error) {
         res.status(500).json({err:error.message})
