@@ -1,6 +1,6 @@
-import express from "express";
+import {Router} from "express";
 import { getLote,createLote,updateLote,deleteLote } from "../controllers/lote.controllers.js";
-const router=express.Router();
+const router=Router();
 
 router.get('/lote',getLote)
 router.post('/lote',createLote)

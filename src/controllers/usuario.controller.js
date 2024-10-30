@@ -78,7 +78,7 @@ export const updateUsuarioG=async (req,res)=>{
                Nombre: usuario || existAdmin.Nombre,  
                Correo: correo || existAdmin.Correo,
                sexo:genero || existAdmin.sexo,
-               FechaNacimiento: fechaNacimiento || existAdmin.FechaNacimiento,
+               FechaNacimiento: fechaNacimiento || existAdmin.FechaNacimiento
            },{where:{
                UsuarioID:existAdmin.AdministradorID
            }})
