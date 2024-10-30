@@ -10,7 +10,7 @@ export const createLote=async (req,res)=>{
         console.log(req.body.data)
         const {data}=req.body//[{},{},{}]
         console.log(data)
-        for(obj of data){
+        for(const obj of data){
             const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
             await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad:Number(Cantidad),ProductoID:id})
         }
