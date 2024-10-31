@@ -35,7 +35,8 @@ export const updatePermisos = async (req, res) => {
 
 
 export const updatePermisos2 = async (req, res) => {
-    console.log(req.body)
+    console.log(req.body);
+    const UsuarioID = req.user.id;
     try {
         const { privilegios, rol: rolId } = req.body.data;
         
@@ -51,6 +52,10 @@ export const updatePermisos2 = async (req, res) => {
                 { where: { RolID: rolId, PrivilegioID: id } }
             );
         }
+
+        const message = `Permisos actualizados para el Rol con ID: ${rolId}`;
+        await createBitacora({ UsuarioID, message }, res);
+
 
         res.status(200).json({ msg: 'Permisos actualizados exitosamente' });
     } catch (error) {

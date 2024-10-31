@@ -6,6 +6,7 @@ import { diasfaltantes } from "../libs/helpers.js";
 
 // en el lote entra unicamente un producto 
 export const createLote=async (req,res)=>{
+    const UsuarioID = req.user.id;
     try {
         console.log(req.body.data)
         const {data}=req.body//[{},{},{}]
@@ -14,6 +15,9 @@ export const createLote=async (req,res)=>{
             const {FechaInicio,FechaVencimiento,Cantidad,id}=obj;
             await Lote.create({FechaInicio,FechaExpiracion:FechaVencimiento,Cantidad:Number(Cantidad),ProductoID:id})
         }
+        const message = `Lote registrado para múltiples productos`;
+        await createBitacora({ UsuarioID, message }, res);
+
         res.status(200).json({msg:'Lote registrado'})
     } catch (error) {
         res.status(500).json({err:error.message})
@@ -41,12 +45,17 @@ export const getLote=async (req,res)=>{
 }
 
 export const deleteLote=async (req,res)=>{
+    const UsuarioID = req.user.id;
     try{
         const existe=await Lote.findByPk(Number(req.params.id))
         if(!existe){
             return res.status(404).json({msg:"Lote no encontrado"})
         }
         await existe.update({Estado:false});
+
+         const message = `Lote eliminado con ID: ${req.params.id}`;
+         await createBitacora({ UsuarioID, message }, res);
+
         res.status(201).json({msg:"Lote eliminado"})
     }catch(error){
         res.staus(500).json({err:error.message})
@@ -54,6 +63,7 @@ export const deleteLote=async (req,res)=>{
 } 
 
 export const updateLote= async (req,res)=>{
+    const UsuarioID = req.user.id;
     try {
         const {LoteID,FechaInicio,FechaVencimiento,Cantidad,ProductoID}=req.body
         const existLote=await Lote.findByPk(LoteID);
@@ -65,6 +75,10 @@ export const updateLote= async (req,res)=>{
             FechaExpiracion:FechaVencimiento || existLote.FechaExpiracion,
             Cantidad:Cantidad || existLote.Cantidad
         })
+
+        const message = `Lote actualizado con ID: ${LoteID}`;
+        await createBitacora({ UsuarioID, message }, res);
+
         res.status(201).json({msg:"Lote Actualizado"})
     } catch (error) {
         res.staus(500).json({err:error.message})

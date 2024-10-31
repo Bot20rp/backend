@@ -9,6 +9,8 @@ import bcrypt from "bcryptjs"
 export const registerEmpleado = async (req, res) => {
     console.log(req.body)
     const { Nombre, NumeroDocumento, Correo, Contrasena, Sexo, FechaNacimiento, Salario, HorarioInicio, HorarioFin, telefono } = req.body;
+    const UsuarioID = req.user.id;
+    
     try {
         // Verificar si el correo ya está registrado
         const correoRegistrado = await Usuario.findOne({ where: { Correo } });
@@ -50,6 +52,9 @@ export const registerEmpleado = async (req, res) => {
             Nro: telefono
         });
 
+        const message = `Empleado registrado con ID: ${newEmpleado.UsuarioID}`;
+        await createBitacora({ UsuarioID, message }, res);
+
         res.status(200).json({ msg: "Empleado registrado exitosamente" });
     } catch (error) {
         console.error(error);
@@ -81,6 +86,7 @@ export const getEmpleadoById=async (req,res)=>{
 
 export const updateEmpleado=async (req,res)=>{
     const [Nombre,Correo,Contrasena,sexo,FechaNacimiento,RolID,Salario,HorarioInicio,HoarioFin]=req.body
+    const UsuarioID = req.user.id;
     try {
         const existEmple= await Empleado.findByPk(req.params.id)
         if(!existEmple){
@@ -102,8 +108,15 @@ export const updateEmpleado=async (req,res)=>{
                 RolID: RolID || user.RolID
            },{
             where:{ UsuarioID:existEmple.EmpleadoID}
-           })
+        })
+
+        const message = `Empleado con ID: ${req.params.id} actualizado`;
+        await createBitacora({ UsuarioID, message }, res);
+
+        res.status(200).json({ msg: "Empleado actualizado exitosamente" });
+
     } catch (error) {
+        console.error("Error al actualizar el empleado:", error);
         res.status(500).json({err:error.message})
     }
     
