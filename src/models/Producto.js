@@ -27,7 +27,7 @@ const producto= db.define('producto',{
         allowNull:false,
         references:{
             model:'Estante',
-            Key:'EstanteID'
+            key:'EstanteID'
         }
     },
     CategoriaID:{
@@ -35,11 +35,11 @@ const producto= db.define('producto',{
         allowNull:false,
         references:{
             model:'Categoria',
-            Key:'CategoriaID'
+            key:'CategoriaID'
         }
     },
     Estado:{
-        type:DataTypes.BOOLEAN
+        type:DataTypes.TINYINT
     }
 },{
     tableName:'Producto',

@@ -1,4 +1,5 @@
 import producto, { createProducto, obtProducto, actProducto } from "../models/Producto.js";
+import CantidadVolumen from "../models/CantidadVolumen.js";
 import { createBitacora } from "./bitacora.controllers.js";
 
 export const registrarProducto = async (req, res) => {
@@ -12,6 +13,49 @@ export const registrarProducto = async (req, res) => {
         res.status(500).json({ err: error.message })
     }
 }
+
+
+// Función para registrar un producto con sus volúmenes asociados
+export const registerProducto = async (req, res) => {
+    const { Nombre, Precio, Marca, Estante, Categoria, Volumen } = req.body.data;
+    const UsuarioID = req.user.id; // Obtener el ID del usuario logueado
+
+    try {
+        // Validar que todos los campos necesarios están presentes
+        if (!Nombre || !Precio || !Marca || !Estante || !Categoria || !Volumen) {
+            return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
+        }
+
+        // Crear el nuevo producto
+        const newProducto = await Producto.create({
+            Nombre,
+            Precio: parseFloat(Precio), // Convertir el precio a número
+            MarcaID: parseInt(Marca), // Convertir a número
+            EstanteID: parseInt(Estante),
+            CategoriaID: parseInt(Categoria),
+            Estado: 1 // Estado activo por defecto
+        });
+
+        // Asociar el volumen con el producto en la tabla intermedia CantidadVolumen
+        await CantidadVolumen.create({
+            ProductoID: newProducto.ProductoID,
+            VolumenID: parseInt(Volumen) // Convertir a número
+        });
+
+        // Registrar el evento en la bitácora
+        const message = `Producto registrado con ID: ${newProducto.ProductoID}, Nombre: ${Nombre}`;
+        await createBitacora({ UsuarioID, message });
+
+        res.status(201).json({
+            message: 'Producto registrado exitosamente.',
+            producto: newProducto
+        });
+    } catch (error) {
+        console.error('Error al registrar el producto:', error);
+        res.status(500).json({ message: 'Error al registrar el producto.' });
+    }
+};
+
 
 export const getProducto = async (req, res) => {
     // const {Nombre,Precio,MarcaID,Estante,Categoria,Volumen}=req.body
@@ -65,3 +109,5 @@ export const deleteproducto = async (req, res) => {
         res.status(500).json({ msg: "Ocurrió un error al intentar eliminar el producto" });
     }
 };
+
+

@@ -9,6 +9,11 @@ import Producto from './Producto.js';
 import facturaCompra from './FacturaCompra.js';
 import almacenamiento from './Almacenamiento.js';
 import proveedor from './Proveedor.js';
+import Volumen from './Volumen.js';
+import CantidadVolumen from './CantidadVolumen.js';
+import marca from './Marca.js';
+import estante from './Estante.js';
+import Categoria from './Categoria.js';
 
 
 
@@ -53,6 +58,15 @@ almacenamiento.belongsTo(facturaCompra, { foreignKey: 'FacturaComID' });
 Producto.hasMany(almacenamiento, { foreignKey: 'ProductoID' });
 almacenamiento.belongsTo(Producto, { foreignKey: 'ProductoID' });
 
+// para la tabla intermedia entre producto y volumen 
+Producto.belongsToMany(Volumen, { through: CantidadVolumen, foreignKey: 'ProductoID' });
+Volumen.belongsToMany(Producto, { through: CantidadVolumen, foreignKey: 'VolumenID' });
 
+// Definir relaciones con las otras tablas
+Producto.belongsTo(marca, { foreignKey: 'MarcaID' });
+Producto.belongsTo(estante, { foreignKey: 'EstanteID' });
+Producto.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
 
-export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto,facturaCompra,almacenamiento,proveedor};
+export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto,facturaCompra,almacenamiento,proveedor,
+    estante,marca,Categoria,Volumen
+};
