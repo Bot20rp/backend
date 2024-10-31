@@ -27,7 +27,7 @@ export const registerProducto = async (req, res) => {
         }
 
         // Crear el nuevo producto
-        const newProducto = await Producto.create({
+        const newProducto = await producto.create({
             Nombre,
             Precio: parseFloat(Precio), // Convertir el precio a número
             MarcaID: parseInt(Marca), // Convertir a número
