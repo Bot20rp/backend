@@ -3,7 +3,6 @@ import Documento from '../models/Documento.js';
 import DetalleDocumento from '../models/DetalleDocumento.js';
 import bcrypt from 'bcryptjs';
 import Telefono from '../models/Telefono.js';
-import { createBitacora } from './bitacora.controllers.js';
 
 
 export const registrarCliente = async (req, res) => {
@@ -48,10 +47,6 @@ export const registrarCliente = async (req, res) => {
         Nro: telefono,  // Usar el número de teléfono proporcionado
         UsuarioID: nuevoUsuario.UsuarioID,
     });
-
-     // Registrar en la bitácora
-     const message = `Cliente registrado: ${Nombre} (${Correo})`;
-     await createBitacora({ UsuarioID: req.user.id, message }, res);
 
     res.status(201).json({
       message: 'Cliente registrado exitosamente',
