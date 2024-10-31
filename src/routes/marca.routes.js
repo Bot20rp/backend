@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getMarca,createMarca } from "../controllers/marca.controller.js";
+import { getMarca,createMarca } from "../controllers/marca.controllers.js";
 const router = Router();
 
 router.get('/obtMarca',getMarca); 
