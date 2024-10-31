@@ -72,13 +72,15 @@ export const updateUsuarioG=async (req,res)=>{
        if(rol==="Administrador"){
            const existAdmin=await Administrador.findByPk(Number(id))
            if(!existAdmin){
-               return res.status(404).json({msg:"No encontrado"})
+              //  return res.status(404).json({msg:"No encontrado"})
+              existAdmin=await Administrador.create({AdministradorID:id})
            }
            await Usuario.update({
                Nombre: usuario || existAdmin.Nombre,  
                Correo: correo || existAdmin.Correo,
                sexo:genero || existAdmin.sexo,
                FechaNacimiento: fechaNacimiento || existAdmin.FechaNacimiento,
+               RolID:1
            },{where:{
                UsuarioID:existAdmin.AdministradorID
            }})
@@ -93,7 +95,10 @@ export const updateUsuarioG=async (req,res)=>{
        if(rol==="Empleado"){
         const existEmple=await Empleado.findByPk(Number(id))
         if(!existEmple){
-            return res.status(404).json({msg:"No encontrado"})
+            // return res.status(404).json({msg:"No encontrado"})
+            existEmple=await Empleado.create({EmpleadoID:id,Salario:salario,
+              HorarioInicio:horarioInicio ,
+              HoarioFin:horarioFin})
             
         }
 
@@ -102,7 +107,8 @@ export const updateUsuarioG=async (req,res)=>{
             Nombre: usuario || existEmple.Nombre,  
             Correo: correo || existEmple.Correo,
             sexo:genero || existEmple.sexo,
-            FechaNacimiento: fechaNacimiento || existEmple.FechaNacimiento
+            FechaNacimiento: fechaNacimiento || existEmple.FechaNacimiento,
+            RolID:2
         },{
             where:{
                 UsuarioID:existEmple.EmpleadoID
@@ -132,15 +138,16 @@ export const updateUsuarioG=async (req,res)=>{
       const existCli=await Cliente.findByPk(Number(id))
       if(!existCli){
         console.log("eorr")
-          return res.status(404).json({msg:"No encontrado"})
+          // return res.status(404).json({msg:"No encontrado"})
+          existCli=await Cliente.create({ClienteID:id})
       }
       console.log("aqui toy")
       await Usuario.update({
           Nombre: usuario || existCli.Nombre,  // si no se envia mantiene el valor actual 
           Correo: correo || existCli.Correo,
-
           sexo:genero || existCli.sexo,
-          FechaNacimiento: fechaNacimiento || existCli.FechaNacimiento
+          FechaNacimiento: fechaNacimiento || existCli.FechaNacimiento,
+          RolID:3
       },{
           where:{
               UsuarioID:existCli.ClienteID
