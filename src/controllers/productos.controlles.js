@@ -18,12 +18,12 @@ export const registrarProducto = async (req, res) => {
 // Función para registrar un producto con sus volúmenes asociados
 export const registerProducto = async (req, res) => {
     console.log(req.body.data);
-    const { Nombre, Precio,  MarcaID, EstanteID,  CategoriaID,  VolumenID } = req.body.data;
+    const { Nombre, Precio, Marca, Estante, Categoria, Volumen } = req.body.data;
     const UsuarioID = req.user.id; // Obtener el ID del usuario logueado
 
     try {
         // Validar que todos los campos necesarios están presentes
-        if (!Nombre || !Precio || !MarcaID || !EstanteID || !CategoriaID || !VolumenID) {
+        if (!Nombre || !Precio || !Marca || !Estante || !Categoria || !Volumen) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
         }
 
@@ -31,16 +31,16 @@ export const registerProducto = async (req, res) => {
         const newProducto = await producto.create({
             Nombre,
             Precio: parseFloat(Precio), // Convertir el precio a número
-            MarcaID: parseInt(MarcaID), // Convertir a número
-            EstanteID: parseInt(EstanteID),
-            CategoriaID: parseInt(CategoriaID),
+            MarcaID: parseInt(Marca), // Convertir a número
+            EstanteID: parseInt(Estante),
+            CategoriaID: parseInt(Categoria),
             Estado: 1 // Estado activo por defecto
         });
 
         // Asociar el volumen con el producto en la tabla intermedia CantidadVolumen
         await CantidadVolumen.create({
             ProductoID: newProducto.ProductoID,
-            VolumenID: parseInt(VolumenID) // Convertir a número
+            VolumenID: parseInt(Volumen) // Convertir a número
         });
 
         // Registrar el evento en la bitácora
