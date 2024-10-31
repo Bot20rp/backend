@@ -1,10 +1,12 @@
 import Combo from '../models/Combo.js';
 import DetalleCombo from '../models/DetalleCombo.js';
 import Producto from '../models/Producto.js'; // Asegúrate de importar el modelo Producto
+import { createBitacora } from './bitacora.controllers.js';
 
 // Función para insertar un nuevo combo con sus productos
 export const createCombo = async (req, res) => {
     const { Descripcion, FechaInicio, FechaFin, Precio, Estado, productos } = req.body.data;
+    const UsuarioID = req.user.id; 
     console.log('Solicitud recibida en /api/combos');
 
     try {
@@ -31,6 +33,9 @@ export const createCombo = async (req, res) => {
 
         await DetalleCombo.bulkCreate(detalles);
 
+         // Registro en la bitácora
+         const message = `Combo creado con ID: ${newCombo.ComboID}`;
+         await createBitacora({ UsuarioID, message }, res);
         // Devolver respuesta
         return res.status(201).json({
             message: 'Combo y productos asociados creados exitosamente.',
