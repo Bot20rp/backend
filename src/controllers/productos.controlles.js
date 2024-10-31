@@ -43,7 +43,7 @@ export const registerProducto = async (req, res) => {
         });
 
         // Registrar el evento en la bitácora
-        const message = `Producto registrado con ID: ${newProducto.ProductoID}, Nombre: ${Nombre}`;
+        const message = `Producto reg: ${newProducto.ProductoID},Name: ${Nombre}`;
         await createBitacora({ UsuarioID, message });
 
         res.status(201).json({
