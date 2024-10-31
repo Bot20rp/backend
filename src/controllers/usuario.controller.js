@@ -96,7 +96,7 @@ export const updateUsuarioG=async (req,res)=>{
         const existEmple=await Empleado.findByPk(Number(id))
         if(!existEmple){
             // return res.status(404).json({msg:"No encontrado"})
-            existEmple=await Empleado.create({EmpleadoID:id,Salario:salario,
+            existEmple=await Empleado.create({EmpleadoID:id,Salario:Number(salario),
               HorarioInicio:horarioInicio ,
               HoarioFin:horarioFin})
             
@@ -116,7 +116,7 @@ export const updateUsuarioG=async (req,res)=>{
         })
 
         await Empleado.update({
-            Salario:salario|| existEmple.Salario,
+            Salario:Number(salario)|| existEmple.Salario,
             HorarioInicio:horarioInicio ||existEmple.HorarioInicio,
             HoarioFin:horarioFin || existEmple.HorarioFin
         },{
