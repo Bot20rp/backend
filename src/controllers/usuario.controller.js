@@ -2,6 +2,7 @@ import { Usuario, Documento, Telefono, DetalleDocumento ,Empleado} from '../mode
 import Rol from '../models/Rol.js';
 import Administrador from "../models/Administrador.js";
 import Cliente from '../models/Cliente.js';
+import { createBitacora } from './bitacora.controllers.js';
 
 
 export const obtenerUsuariosConDetalles= async (req, res) => {
@@ -68,7 +69,7 @@ export const updateUsuarioG=async (req,res)=>{
   console.log(req.body)
   const {id,usuario,correo,genero,telefono,fechaNacimiento,salario,horarioInicio,horarioFin,rol}=req.body.data;
   try {
-       
+    let message = '';
        if(rol==="Administrador"){
            let existAdmin=await Administrador.findByPk(Number(id))
            if(!existAdmin){
@@ -84,6 +85,8 @@ export const updateUsuarioG=async (req,res)=>{
            },{where:{
                UsuarioID:existAdmin.AdministradorID
            }})
+
+           message = `Administrador actualizado: ${usuario} (${correo})`;
            const miTelefono=await Telefono.findOne({where:{UsuarioID:Number(id)}})
            await Telefono.update({
                Nro:telefono || miTelefono.Nro 
@@ -125,6 +128,8 @@ export const updateUsuarioG=async (req,res)=>{
             }
         })
 
+        message = `Empleado actualizado: ${usuario} (${correo})`;
+
         const miTelefono=await Telefono.findOne({where:{UsuarioID:Number(id)}})
         await Telefono.update({
             Nro:telefono || miTelefono.Nro 
@@ -154,12 +159,17 @@ export const updateUsuarioG=async (req,res)=>{
           }
       })
 
+      message = `Cliente actualizado: ${usuario} (${correo})`;
+
       const miTelefono=await Telefono.findOne({where:{UsuarioID:Number(id)}})
       await Telefono.update({
           Nro:telefono || miTelefono.Nro 
       },{where:{UsuarioID:Number(id)}})
       return res.status(200).json({msg:"Actualizacion Correcta"})
   }
+
+  await createBitacora({ UsuarioID: req.user.id, message }, res);
+
   } catch (error) {
       res.status(500).json({msg:error.message})
   }
@@ -178,6 +188,12 @@ export const deleteUsuarioG=async (req,res)=>{
         //  await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
         // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
          await infoUser.update({Estado:false})
+         await Bitacora.create({
+          UsuarioID: id,
+          Accion: 'Eliminar Usuario',
+          Fecha: new Date(),
+          Detalles: `Usuario con ID ${id} (Rol: Administrador) ha sido desactivado.`
+        });
          return res.status(200).json({msj:"Eliminacion exitosa"})
       }
 
@@ -187,6 +203,14 @@ export const deleteUsuarioG=async (req,res)=>{
           // await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
           // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
           await infoUser.update({Estado:false})
+
+          await Bitacora.create({
+            UsuarioID: id,
+            Accion: 'Eliminar Usuario',
+            Fecha: new Date(),
+            Detalles: `Usuario con ID ${id} (Rol: Empleado) ha sido desactivado.`
+          });
+    
           return res.status(200).json({msj:"Eliminacion exitosa"})
        }
 
@@ -196,6 +220,14 @@ export const deleteUsuarioG=async (req,res)=>{
         // await DetalleDocumento.destroy({where:{UsuarioID:infoUser.UsuarioID}})
         // await Usuario.destroy({where:{UsuarioID:infoUser.UsuarioID}})
         await infoUser.update({Estado:false})
+
+        await Bitacora.create({
+          UsuarioID: id,
+          Accion: 'Eliminar Usuario',
+          Fecha: new Date(),
+          Detalles: `Usuario con ID ${id} (Rol: Cliente) ha sido desactivado.`
+        });
+
         return res.status(200).json({msj:"Eliminacion exitosa"})
      }
   }catch(error){
