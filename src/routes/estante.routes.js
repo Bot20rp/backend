@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getEstante,createEstante } from "../controllers/marca.controller.js";
+import { getEstante,createEstante } from "../controllers/estante.controllers.js";
 const router = Router();
 
 router.get('/obtMarca',getEstante); 
