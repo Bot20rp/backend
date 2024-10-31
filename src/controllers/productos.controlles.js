@@ -17,6 +17,7 @@ export const registrarProducto = async (req, res) => {
 
 // Función para registrar un producto con sus volúmenes asociados
 export const registerProducto = async (req, res) => {
+    console.log(req.body.data);
     const { Nombre, Precio, Marca, Estante, Categoria, Volumen } = req.body.data;
     const UsuarioID = req.user.id; // Obtener el ID del usuario logueado
 
