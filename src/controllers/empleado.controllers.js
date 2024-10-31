@@ -4,7 +4,7 @@ import Documento from '../models/Documento.js';
 import DetalleDocumento from '../models/DetalleDocumento.js';
 import Telefono from '../models/Telefono.js';
 import bcrypt from "bcryptjs"
-
+import { createBitacora } from './bitacora.controllers.js';
 
 export const registerEmpleado = async (req, res) => {
     console.log(req.body)

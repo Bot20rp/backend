@@ -1,6 +1,7 @@
 import Combo from '../models/Combo.js';
 import DetalleCombo from '../models/DetalleCombo.js';
 import Producto from '../models/Producto.js'; // Asegúrate de importar el modelo Producto
+import { createBitacora } from './bitacora.controllers.js';
 import bitacora from '../models/Bitacora.js';
 
 // Función para insertar un nuevo combo con sus productos

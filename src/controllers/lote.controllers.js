@@ -2,7 +2,7 @@ import Lote from "../models/Lote.js";
 import Producto from "../models/Producto.js";
 import { Sequelize, where } from "sequelize";
 import { diasfaltantes } from "../libs/helpers.js";
-
+import { createBitacora } from './bitacora.controllers.js';
 
 // en el lote entra unicamente un producto 
 export const createLote=async (req,res)=>{

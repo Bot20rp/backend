@@ -2,11 +2,13 @@ import Proveedor from "../models/Proveedor.js";
 import FacturaCompra from "../models/FacturaCompra.js";
 import Almacenamiento from "../models/Almacenamiento.js";
 import { db } from "../config/dbConfig.js"; // Asegúrate de importar correctamente la configuración
+import { createBitacora } from './bitacora.controllers.js';
+
 
 export const registrarCompra = async (req, res) => {
     console.log(req.body.data)
     const { NroFactura, Fecha, CodigoAutorizacion, CodigoControl, ProveedorID, TotalInteres, TotalPagar, productos } = req.body.data;
-
+    const UsuarioID = req.user.id; 
     // Obtener ID del administrador desde el token o sesión
     const administradorID = req.user?.id;
 
@@ -46,6 +48,9 @@ export const registrarCompra = async (req, res) => {
             }, { transaction: t });
         }
 
+          // Registrar en la bitácora
+          const message = `Compra registrada con NroFactura: ${NroFactura}, TotalPagar: ${TotalPagar}`;
+          await createBitacora({ UsuarioID: administradorID, message }, res);
         // Confirmar la transacción
         await t.commit();
 

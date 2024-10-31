@@ -1,6 +1,7 @@
 
 import Permisos,{obtenerPermisos} from "../models/Permisos.js"
 import { privilegios } from "../libs/privilegios.js"
+import { createBitacora } from './bitacora.controllers.js';
 
 export const getPermisos=async (req,res)=>{
     try{

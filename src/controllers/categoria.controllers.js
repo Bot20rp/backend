@@ -1,5 +1,5 @@
 import Categoria from '../models/Categoria.js'; 
-
+import { createBitacora } from './bitacora.controllers.js';
 
  export const insertarCategoriaPadre = async (req, res) => {
     console.log(req.body)
@@ -140,7 +140,7 @@ import Categoria from '../models/Categoria.js';
         // Registro en la bitácora
         const message = `Categoría eliminada: ${nombre}`;
         await createBitacora({ UsuarioID, message }, res);
-        
+
       res.status(200).json({ message: 'Categoría eliminada exitosamente' });
     } catch (error) {
       console.error(error);
