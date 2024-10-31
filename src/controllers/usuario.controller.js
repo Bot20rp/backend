@@ -70,7 +70,7 @@ export const updateUsuarioG=async (req,res)=>{
   try {
        
        if(rol==="Administrador"){
-           const existAdmin=await Administrador.findByPk(Number(id))
+           let existAdmin=await Administrador.findByPk(Number(id))
            if(!existAdmin){
               //  return res.status(404).json({msg:"No encontrado"})
               existAdmin=await Administrador.create({AdministradorID:id})
@@ -93,12 +93,12 @@ export const updateUsuarioG=async (req,res)=>{
 
 
        if(rol==="Empleado"){
-        const existEmple=await Empleado.findByPk(Number(id))
+        let existEmple=await Empleado.findByPk(Number(id))
         if(!existEmple){
             // return res.status(404).json({msg:"No encontrado"})
             existEmple=await Empleado.create({EmpleadoID:id,Salario:Number(salario),
-              HorarioInicio:horarioInicio ,
-              HoarioFin:horarioFin})
+              HorarioInicio:horarioInicio,
+              HorarioFin:horarioFin})
             
         }
 
@@ -118,7 +118,7 @@ export const updateUsuarioG=async (req,res)=>{
         await Empleado.update({
             Salario:Number(salario)|| existEmple.Salario,
             HorarioInicio:horarioInicio ||existEmple.HorarioInicio,
-            HoarioFin:horarioFin || existEmple.HorarioFin
+            HorarioFin:horarioFin || existEmple.HorarioFin
         },{
             where:{
                 EmpleadoID:existEmple.EmpleadoID
@@ -135,7 +135,7 @@ export const updateUsuarioG=async (req,res)=>{
 
       
     if(rol==="Cliente"){
-      const existCli=await Cliente.findByPk(Number(id))
+      let existCli=await Cliente.findByPk(Number(id))
       if(!existCli){
         console.log("eorr")
           // return res.status(404).json({msg:"No encontrado"})
@@ -164,6 +164,8 @@ export const updateUsuarioG=async (req,res)=>{
       res.status(500).json({msg:error.message})
   }
 };
+
+
 
 export const deleteUsuarioG=async (req,res)=>{
   console.log(req.body.data)

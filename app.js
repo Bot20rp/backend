@@ -16,6 +16,8 @@ import routerPerm from "./src/routes/permisos.routes.js";
 import routerCompra from "./src/routes/Compras.routes.js"
 import routerLote from "./src/routes/lote.routes.js";
 import routerRol from "./src/routes/rol.routes.js";
+import routerMarca from "./src/routes/marca.routes.js";
+import routerEst from "./src/routes/estante.routes.js";
 const app = express();
 rundb();
 
@@ -43,4 +45,6 @@ app.use("/api",routerPerm);
 app.use("/api",routerCompra);
 app.use("/api",routerLote)
 app.use("/api",routerRol)
+app.use("/api",routerMarca)
+app.use("/api",routerEst)
 export default app;
