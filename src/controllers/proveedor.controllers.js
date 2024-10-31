@@ -7,6 +7,9 @@ export const registrarProveedor=async (req,res)=>{
         const proveedorCreado=await proveedor.create({
             Nombre,Contacto,Direccion,Correo
         })
+        const message=`registro al proveedor con ID ${proveedorCreado.ProveedorID}`
+        const UsuarioID=req.user.id;
+        await createBitacora({UsuarioID,message},res);
         res.status(200).json(
             {msg:'provedor registrado',proveedorCreado}
         )
@@ -58,6 +61,10 @@ export const updateProveedor=async(req,res)=>{
         }else{
             return res.status(404).json({msg:"Proveedor no encontrado"})
         }
+
+        const message=`actualizo al proveedor con ID ${existProveedor.ProveedorID}`
+        const UsuarioID=req.user.id;
+        await createBitacora({UsuarioID,message},res);
         res.status(200).json({msg:'Proveedor actualizado',})
     }catch(error){
         res.status(500).json({err:error.message})
@@ -80,6 +87,9 @@ export const deleteProveedor = async (req, res) => {
     try {
         //await proveedor.destroy({ where: { ProveedorID: numericId } });
         await existProveedor.update({Estado:false})
+        const message=`elimino al proveedor con ID ${id}`
+        const UsuarioID=req.user.id;
+        await createBitacora({UsuarioID,message},res);
         res.status(200).json({ msg: "Proveedor eliminado" });
     } catch (error) {
         res.status(500).json({ err: error.message });
