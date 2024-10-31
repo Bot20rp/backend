@@ -1,7 +1,7 @@
 import Combo from '../models/Combo.js';
 import DetalleCombo from '../models/DetalleCombo.js';
 import Producto from '../models/Producto.js'; // Asegúrate de importar el modelo Producto
-import { createBitacora } from './bitacora.controllers.js';
+import bitacora from '../models/Bitacora.js';
 
 // Función para insertar un nuevo combo con sus productos
 export const createCombo = async (req, res) => {
@@ -80,7 +80,7 @@ export const getCombos = async (req, res) => {
 export const updateCombo = async (req, res) => {
     try {
         const { id, FechaFin, Estado, Precio } = req.body.data; // Ahora el ID se obtiene del cuerpo de la solicitud
-
+        const UsuarioID = req.user.id;
         // Verifica que se proporcione el ID
         if (!id) {
             return res.status(400).json({ message: "El ID del combo es requerido." });
@@ -103,6 +103,9 @@ export const updateCombo = async (req, res) => {
         if (updatedRows === 0) {
             return res.status(404).json({ message: "Combo no encontrado." });
         }
+
+        const message = `Combo actualizado con ID: ${id}`;
+        await createBitacora({ UsuarioID, message }, res);
 
         return res.status(200).json({ message: "Combo actualizado exitosamente." });
     } catch (error) {

@@ -4,6 +4,7 @@ import Categoria from '../models/Categoria.js';
  export const insertarCategoriaPadre = async (req, res) => {
     console.log(req.body)
     const { nombre } = req.body.data;
+    const UsuarioID = req.user.id;
     // Validar que el campo necesario esté presente
     if (!nombre) {
       return res.status(400).json({ message: 'El nombre de la categoría es obligatorio' });
@@ -14,6 +15,11 @@ import Categoria from '../models/Categoria.js';
         Nombre: nombre,
         CategoriaPadreID: null, // No tiene categoría padre
       });
+      // Registro en la bitácora
+      const message = `Categoria padre creada con ID: ${nuevaCategoria.CategoriaID}`;
+      await createBitacora({ UsuarioID, message }, res);
+
+      
       res.status(201).json({
         message: 'Categoría padre registrada exitosamente',
         categoria: nuevaCategoria,
@@ -28,6 +34,7 @@ import Categoria from '../models/Categoria.js';
   export const insertarCategoriaHija = async (req, res) => {
     console.log(req.body)
     const { nombre, categoria } = req.body.data; // Cambiar CategoriaPadreID por NombreCategoriaPadre
+    const UsuarioID = req.user.id; 
     // Validar que todos los campos necesarios estén presentes
     if (!nombre || !categoria) {
       return res.status(400).json({ message: 'El nombre y la categoría padre son obligatorios' });
@@ -49,6 +56,8 @@ import Categoria from '../models/Categoria.js';
         CategoriaPadreID: categoriaPadre.CategoriaID, // Usar el ID de la categoría padre encontrada
       });
       
+      const message = `Categoría hija creada con ID: ${nuevaCategoriaHija.CategoriaID}, bajo la categoría padre: ${categoriaPadre.Nombre}`;
+      await createBitacora({ UsuarioID, message }, res);
   
       res.status(201).json({
         message: 'Categoría hija registrada exitosamente',
@@ -61,9 +70,10 @@ import Categoria from '../models/Categoria.js';
   };
 
 
+
   export const modificarCategoriaPorNombre = async (req, res) => {
     const { nombreActual, nuevoNombre } = req.body; // Recibimos el nombre actual y el nuevo nombre
-  
+    const UsuarioID = req.user.id;
     try {
       // Buscar la categoría por su nombre actual
       const categoria = await Categoria.findOne({
@@ -81,6 +91,9 @@ import Categoria from '../models/Categoria.js';
       // Guardar los cambios en la base de datos
       await categoria.save();
   
+      const message = `Categoría modificada: ${nombreActual} a ${nuevoNombre}`;
+      await createBitacora({ UsuarioID, message }, res);
+
       res.status(200).json({
         message: 'Categoría modificada exitosamente',
         categoria,
@@ -110,7 +123,7 @@ import Categoria from '../models/Categoria.js';
   export const eliminarCategoriaPorNombre = async (req, res) => {
     console.log(req.body.nombre)
     const { nombre } = req.body;  // Recibimos el nombre de la categoría a eliminar
-    
+    const UsuarioID = req.user.id;
     try {
       // Buscar la categoría por su nombre
       const categoria = await Categoria.findOne({
@@ -124,6 +137,10 @@ import Categoria from '../models/Categoria.js';
       // Eliminar la categoría
       await categoria.destroy();
   
+        // Registro en la bitácora
+        const message = `Categoría eliminada: ${nombre}`;
+        await createBitacora({ UsuarioID, message }, res);
+        
       res.status(200).json({ message: 'Categoría eliminada exitosamente' });
     } catch (error) {
       console.error(error);
