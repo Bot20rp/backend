@@ -111,4 +111,71 @@ export const deleteproducto = async (req, res) => {
     }
 };
 
+// Función para actualizar un producto con sus volúmenes asociados
+export const updateProducto1 = async (req, res) => {
+    console.log(req.body.data);
+    const { ProductoID, Nombre, Precio, Marca, Estante, Categoria, Volumen } = req.body.data;
+    const UsuarioID = req.user.id; // Obtener el ID del usuario logueado
+    try {
+        // Validar que el ID del producto esté presente
+        if (!ProductoID) {
+            return res.status(400).json({ message: 'El ID del producto es obligatorio.' });
+        }
+
+        // Buscar el producto existente
+        const productoExistente = await producto.findByPk(ProductoID);
+        if (!productoExistente) {
+            return res.status(404).json({ message: 'Producto no encontrado.' });
+        }
+
+        // Actualizar el producto con los nuevos valores (si se proporcionan)
+        const updatedProducto = await producto.update(
+            {
+                Nombre: Nombre || productoExistente.Nombre,
+                Precio: Precio !== undefined ? parseFloat(Precio) : productoExistente.Precio,
+                MarcaID: Marca !== undefined ? parseInt(Marca) : productoExistente.MarcaID,
+                EstanteID: Estante !== undefined ? parseInt(Estante) : productoExistente.EstanteID,
+                CategoriaID: Categoria !== undefined ? parseInt(Categoria) : productoExistente.CategoriaID,
+                Estado: 1 // Se mantiene el estado activo
+            },
+            {
+                where: { ProductoID } // Filtrar por el ID del producto
+            }
+        );
+
+        // Actualizar o crear la asociación con el volumen en la tabla intermedia CantidadVolumen
+        if (Volumen !== undefined) {
+            const cantidadVolumenExistente = await CantidadVolumen.findOne({
+                where: { ProductoID }
+            });
+
+            if (cantidadVolumenExistente) {
+                // Actualizar la asociación existente
+                await CantidadVolumen.update(
+                    { VolumenID: parseInt(Volumen) },
+                    { where: { ProductoID } }
+                );
+            } else {
+                // Crear una nueva asociación si no existe
+                await CantidadVolumen.create({
+                    ProductoID,
+                    VolumenID: parseInt(Volumen)
+                });
+            }
+        }
+
+        // Registrar el evento en la bitácora
+        const message = `actualizado prod: ${ProductoID}, Name ${Nombre || productoExistente.Nombre}`;
+        await createBitacora({ UsuarioID, message });
+
+        res.status(200).json({
+            message: 'Producto actualizado exitosamente.',
+            producto: updatedProducto
+        });
+    } catch (error) {
+        console.error('Error al actualizar el producto:', error);
+        res.status(500).json({ message: 'Error al actualizar el producto.' });
+    }
+};
+
 
