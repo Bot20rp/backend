@@ -1,5 +1,5 @@
 import proveedor from "../models/Proveedor.js";
-
+import { createBitacora } from "./bitacora.controllers.js";
 export const registrarProveedor=async (req,res)=>{
     console.log(req.body)
     const {Nombre,Contacto,Direccion,Correo}=req.body;
