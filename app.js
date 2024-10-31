@@ -47,4 +47,5 @@ app.use("/api",routerLote)
 app.use("/api",routerRol)
 app.use("/api",routerMarca)
 app.use("/api",routerEst)
+
 export default app;
