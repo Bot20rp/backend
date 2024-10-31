@@ -54,7 +54,7 @@ export const deleteproducto = async (req, res) => {
         
         // Actualiza el estado del producto a false (eliminado)
         await existProd.update({ Estado: false });
-        await createBitacora({UsuarioID:req.user.id,message:`eliminio el producto con ID ${req.data.id}`},res);
+        await createBitacora({UsuarioID:req.user.id,message:`elimino el producto con ID ${req.data.id}`},res);
         console.log("Producto actualizado con éxito");
         
         // Responde con éxito
