@@ -97,8 +97,8 @@ export const updateUsuarioG=async (req,res)=>{
         if(!existEmple){
             // return res.status(404).json({msg:"No encontrado"})
             existEmple=await Empleado.create({EmpleadoID:id,Salario:Number(salario),
-              HorarioInicio:horarioInicio ,
-              HoarioFin:horarioFin})
+              HorarioInicio:horarioInicio,
+              HorarioFin:horarioFin})
             
         }
 
@@ -118,7 +118,7 @@ export const updateUsuarioG=async (req,res)=>{
         await Empleado.update({
             Salario:Number(salario)|| existEmple.Salario,
             HorarioInicio:horarioInicio ||existEmple.HorarioInicio,
-            HoarioFin:horarioFin || existEmple.HorarioFin
+            HorarioFin:horarioFin || existEmple.HorarioFin
         },{
             where:{
                 EmpleadoID:existEmple.EmpleadoID
