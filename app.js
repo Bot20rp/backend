@@ -19,6 +19,7 @@ import routerRol from "./src/routes/rol.routes.js";
 import routerMarca from "./src/routes/marca.routes.js";
 import routerEst from "./src/routes/estante.routes.js";
 import routerVolu from "./src/routes/volumen.routes.js";
+import routerStripe from "./src/routes/stripe.routes.js";
 const app = express();
 rundb();
 
@@ -49,5 +50,6 @@ app.use("/api",routerRol)
 app.use("/api",routerMarca)
 app.use("/api",routerEst)
 app.use("/api",routerVolu)
+app.use("/api",routerStripe);
 
 export default app;
