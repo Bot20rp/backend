@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe("sk_test_51QIewwDhm58X9ebvy0SU8i6cf5kx9K3APMIey80A9r8hWj3aeMUZybaPDhExaFNpsIkevdLH8M6FzOfpdff99E1B001ZF8mnQQ")
+
+const stripe = new Stripe(process.env.KEY_STRIPE)
 
 export const tarjet = async (req, res) => {
     console.log(req.body);
