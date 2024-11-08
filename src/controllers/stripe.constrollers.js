@@ -13,9 +13,12 @@ export const tarjet = async (req, res) => {
             currency: "USD",
             description: "GAMING WORD",
             payment_method: id,
-            confirm: true
+            confirm: true,
+            automatic_payment_methods: {
+                enabled: true,
+                allow_redirects: 'never'  // Evita métodos que requieran redirección
+            }
         });
-
         console.log(payment);
         res.send({ message: 'Payment successful' });
     } catch (error) {
