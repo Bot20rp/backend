@@ -1,6 +1,6 @@
 import {Router} from "express"
 
-import { obtenerUsuariosConDetalles, updateUsuarioG,deleteUsuarioG} from "../controllers/usuario.controller.js";
+import { obtenerUsuariosConDetalles, updateUsuarioG,deleteUsuarioG} from "../controllers/usuario.controllers.js";
 import { verifyToken1 } from "../controllers/auth.controllers.js";
 
 const router = Router();
