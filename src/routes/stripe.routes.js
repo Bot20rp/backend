@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { tarjet } from "../controllers/stripe.constrollers";
+import { tarjet } from "../controllers/stripe.constrollers.js";
 
 const router = Router();
 
