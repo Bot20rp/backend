@@ -76,5 +76,28 @@ export const CierreApertura = async (req, res)=>{
         console.error("Error al cerrar la apertura:", error); 
         res.status(500).json({message:"Erro al cerrar la apertura."});
     }
-
 }; 
+
+export const ObtenerAperturaActivas = async (req, res)=>{
+    try{
+        const aperturasActivas= await Apertura.findAll({
+            where:{
+                FechaCierre:null
+            }
+        })
+
+        if (aperturasActivas.length==0){
+            return res.status(404).json({message:"No hay aperturas activas"}); 
+        }
+
+        res.status(200).json({
+            message:"Apertura activa obtenida:", 
+            data:aperturasActivas
+        });
+
+    } catch(error){
+        console.error("Error al intentar obtener aperturas:",error); 
+        res.status(500).json({message:"Error al intentar obtener aperturas."})
+    }
+
+}
