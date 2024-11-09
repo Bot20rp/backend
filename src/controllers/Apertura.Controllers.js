@@ -3,20 +3,20 @@ import Apertura from "../models/Apertura.js";
 
 export const InicoApertura = async (req, res)=>{
     try {
-        const {CajaChica,FechaInicio, HoraInicio,SaldoEFectivo, SaldoQr,SaldoTarjeta,recuentoEfectivo,recuentoQr,recuentoTarjeta}=req.body; 
+        const {CajaChica,FechaInicio, HoraInicio,SaldoEfectivo, SaldoQr,SaldoTarjeta,recuentoEfectivo,recuentoQr,recuentoTarjeta}=req.body; 
 
         // verifica apertura
-        const aperturaActica= await Apertura.findOne({
+        const aperturaActiva= await Apertura.findOne({
             where :{FechaCierre:null}
         });
-        if (aperturaActica){
+        if (aperturaActiva){
             return res.status(400).json({message:"ya hay una apertura activa"});
         }
 
         const nuevaApertura =await Apertura.create({
             FechaInicio, 
             FechaCierre:null,
-            SaldoEFectivo, 
+            SaldoEfectivo, 
             SaldoQr,
             SaldoTarjeta,
             recuentoEfectivo, 
