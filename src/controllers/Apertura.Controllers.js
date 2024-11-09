@@ -62,7 +62,11 @@ export const CierreApertura = async (req, res)=>{
             CajaChica,
             HoraFin,
             Estado: false
-        }); 
+        },
+        {
+            where:{AperturaID}
+        }
+        ); 
 
         res.status(200).json({
             message:"Apertura cerrada con exito",
