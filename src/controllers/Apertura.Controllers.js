@@ -3,7 +3,7 @@ import Apertura from "../models/Apertura.js";
 
 export const InicoApertura = async (req, res)=>{
     try {
-        const {CajaChica,FechaInicio, HoraInicio,SaldoEfectivo, SaldoQr,SaldoTarjeta,recuentoEfectivo,recuentoQr,recuentoTarjeta}=req.body; 
+        const {CajaChica,FechaInicio, HoraInicio}=req.body; 
 
         // verifica apertura
         const aperturaActiva= await Apertura.findOne({
@@ -16,12 +16,12 @@ export const InicoApertura = async (req, res)=>{
         const nuevaApertura =await Apertura.create({
             FechaInicio, 
             FechaCierre:null,
-            SaldoEfectivo, 
-            SaldoQr,
-            SaldoTarjeta,
-            recuentoEfectivo, 
-            recuentoQr,
-            recuentoTarjeta,
+            SaldoEfectivo:0, 
+            SaldoQr:0,
+            SaldoTarjeta:0,
+            recuentoEfectivo:0, 
+            recuentoQr:0,
+            recuentoTarjeta:0,
             CajaChica,
             HoraInicio,
             Estado: true
