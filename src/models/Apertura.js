@@ -27,7 +27,7 @@ const Apertura = db.define('Apertura',{
         type:DataTypes.FLOAT, 
         allowNull:false, 
     },
-    recuntoEfectivo:{
+    recuentoEfectivo:{
         type:DataTypes.FLOAT, 
         allowNull:false, 
     },
