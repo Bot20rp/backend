@@ -46,6 +46,14 @@ const Apertura = db.define('Apertura',{
     Estado:{
         type:DataTypes.BOOLEAN, 
         allowNull:false, 
+    },
+    HoraInicio:{
+        type:DataTypes.TIME, 
+        allowNull:false, 
+    },
+    HoraFin:{
+        type:DataTypes.TIME, 
+        defaultValue:true, 
     }
 },{
     tableName:'Apertura', 
