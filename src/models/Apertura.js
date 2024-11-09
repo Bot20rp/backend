@@ -13,7 +13,7 @@ const Apertura = db.define('Apertura',{
     },
     FechaCierre:{
         type:DataTypes.DATE, 
-        allowNull:false,
+        allowNull:true,
     },
     SaldoEfectivo:{
         type:DataTypes.FLOAT, 
@@ -45,7 +45,7 @@ const Apertura = db.define('Apertura',{
     },
     Estado:{
         type:DataTypes.BOOLEAN, 
-        allowNull:false, 
+        defaultValue:true, 
     },
     HoraInicio:{
         type:DataTypes.TIME, 
@@ -53,7 +53,7 @@ const Apertura = db.define('Apertura',{
     },
     HoraFin:{
         type:DataTypes.TIME, 
-        defaultValue:true, 
+        allowNull:true, 
     }
 },{
     tableName:'Apertura', 
