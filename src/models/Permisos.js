@@ -30,6 +30,7 @@ const permisos= db.define('Privilegios',{
 export const obtenerPermisos=async (id)=>{
     try{
         const data=await db.query(`CALL getPrivilegio(${id})`)
+        cconsole.log(data)
         return data;
     }catch(error){
         throw new Error (`Error al llamar el PA ${error.message}`)
