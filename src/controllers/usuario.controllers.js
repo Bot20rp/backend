@@ -48,6 +48,7 @@ export const obtenerUsuariosConDetalles= async (req, res) => {
       correo: usuario.Correo,
       telefono: usuario.Telefonos[0]?.Nro || 'No registrado',  // Si no tiene teléfono, mostrar un mensaje por defecto
       genero: usuario.Sexo === 'M' ? 'Masculino' : 'Femenino',  // Convertir "Sexo" a "Masculino" o "Femenino"
+      documento : usuario.DetalleDocumento[0]?.NumeroDocumento || 'NO registrado',
       rol: usuario.Rol?.Nombre || 'No asignado',  // Mostrar rol, o "No asignado" si no existe
       salario: usuario.Empleado?.Salario || 'No registrado',  // Mostrar salario o 'No registrado'
       horarioInicio: usuario.Empleado?.HorarioInicio || 'No registrado' ,// Mostrar horario laboral o 'No registrado'
