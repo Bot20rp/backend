@@ -14,6 +14,15 @@ import CantidadVolumen from './CantidadVolumen.js';
 import marca from './Marca.js';
 import estante from './Estante.js';
 import Categoria from './Categoria.js';
+import cliente from './Cliente.js';
+import Factura from './Factura.js';
+import TipoVenta from './TipoVenta.js';
+import NotaVenta from './NotaVenta.js';
+import DetalleVenta from './DetalleVenta.js';
+import Transaccion from './Transaccion.js';
+import Apertura from './Apertura.js';
+import TipoPago from './TipoPago.js';
+import VentaCombo from './VentaCombo.js';
 
 
 
@@ -37,7 +46,6 @@ Empleado.belongsTo(Usuario, {
     foreignKey: 'EmpleadoID',  // Debe ser 'EmpleadoID' aquí también
     targetKey: 'UsuarioID', // Asegúrate de que sea 'UsuarioID'
 });
-
 // Establecer la relación detalleCombo -- entre combo y producto 
 // Relación entre DetalleCombo y Combo
 DetalleCombo.belongsTo(Combo, { foreignKey: 'ComboID' });
@@ -67,6 +75,33 @@ Producto.belongsTo(marca, { foreignKey: 'MarcaID' });
 Producto.belongsTo(estante, { foreignKey: 'EstanteID' });
 Producto.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
 
+// Relaciones con las otras tablas
+NotaVenta.belongsTo(cliente, { foreignKey: 'ClienteID' });
+NotaVenta.belongsTo(Factura, { foreignKey: 'FacturaID' });
+NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID' });
+
+//DetalleVenta
+// Definimos las relaciones
+Producto.hasMany(DetalleVenta, { foreignKey: 'ProductoID' });
+NotaVenta.hasMany(DetalleVenta, { foreignKey: 'NotaVentaID' });
+DetalleVenta.belongsTo(Producto, { foreignKey: 'ProductoID' });
+DetalleVenta.belongsTo(NotaVenta, { foreignKey: 'NotaVentaID' });
+
+// Definimos las relaciones  transaccion 
+TipoPago.hasMany(Transaccion, { foreignKey: 'TipoPagoID' });
+NotaVenta.hasMany(Transaccion, { foreignKey: 'NotaVentaID' });
+Apertura.hasMany(Transaccion, { foreignKey: 'AperturaID' });
+Transaccion.belongsTo(TipoPago, { foreignKey: 'TipoPagoID' });
+Transaccion.belongsTo(NotaVenta, { foreignKey: 'NotaVentaID' });
+Transaccion.belongsTo(Apertura, { foreignKey: 'AperturaID' });
+
+// Definimos las relaciones de Venta combo
+Combo.hasMany(VentaCombo, { foreignKey: 'ComboID' });
+NotaVenta.hasMany(VentaCombo, { foreignKey: 'NotaVentaID' });
+VentaCombo.belongsTo(Combo, { foreignKey: 'ComboID' });
+VentaCombo.belongsTo(NotaVenta, { foreignKey: 'NotaVentaID' });
+
+
 export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto,facturaCompra,almacenamiento,proveedor,
-    estante,marca,Categoria,Volumen
+    estante,marca,Categoria,Volumen, Factura,cliente,TipoVenta,NotaVenta, DetalleVenta,TipoPago, VentaCombo
 };
