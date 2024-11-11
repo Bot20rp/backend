@@ -3,6 +3,7 @@ import Apertura from "../models/Apertura.js";
 
 export const InicoApertura = async (req, res)=>{
     try {
+        console.log(req.body)
         const {CajaChica,FechaInicio, HoraInicio}=req.body.data; 
 
         // verifica apertura
