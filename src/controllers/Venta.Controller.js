@@ -41,7 +41,7 @@ export const crearFactura = async (req, res) => {
    // Generar Código de Control
    await db.query('CALL GenerarCodigoControl(@CodigoControl)');
    const [codigoControlResult] = await db.query('SELECT @CodigoControl AS CodigoControl');
-   await db.query('CALL GenerarCodigoAutorizacion(@CodigoAutorizacion)');
+   await db.query('CALL GenerarCodigoDeAutorizacion(@CodigoAutorizacion)');
    const [codigoAutorizacionResult] = await db.query('SELECT @CodigoAutorizacion AS CodigoAutorizacion');
     
     const CodigoControl = codigoControlResult[1][0].CodigoControl; 
