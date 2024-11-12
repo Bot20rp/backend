@@ -38,8 +38,11 @@ export const crearFactura = async (req, res) => {
     if (!cliente) return res.status(404).json({ message: "Cliente no encontrado" });
 
     // Generar el Código de Control y Código de Autorización usando los procedimientos almacenados
-    const [codigoControlResult] = await db.query("CALL GenerarCodigoControl(@CodigoControl); SELECT @CodigoControl AS CodigoControl;");
-    const [codigoAutorizacionResult] = await db.query("CALL GenerarCodigoDeAutorizacion(@CodigoDeAutorizacion); SELECT @CodigoDeAutorizacion AS CodigoDeAutorizacion;");
+   // Generar Código de Control
+   await db.query('CALL GenerarCodigoControl(@CodigoControl)');
+   const [codigoControlResult] = await db.query('SELECT @CodigoControl AS CodigoControl');
+   await db.query('CALL GenerarCodigoAutorizacion(@CodigoAutorizacion)');
+   const [codigoAutorizacionResult] = await db.query('SELECT @CodigoAutorizacion AS CodigoAutorizacion');
     
     const CodigoControl = codigoControlResult[1][0].CodigoControl; 
     const CodigoDeAutorizacion = codigoAutorizacionResult[1][0].CodigoDeAutorizacion;
