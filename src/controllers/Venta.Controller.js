@@ -5,6 +5,7 @@ import Producto from "../models/Producto.js";
 import DetalleVenta from "../models/DetalleVenta.js";
 import Transaccion from "../models/Transaccion.js";
 import TipoVenta from '../models/TipoVenta.js';
+import Apertura from "../models/Apertura.js";
 import { DataTypes } from 'sequelize';
 import { db } from '../config/dbConfig.js';
 
