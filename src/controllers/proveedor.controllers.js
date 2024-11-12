@@ -22,6 +22,7 @@ export const registrarProveedor=async (req,res)=>{
 export const getProveedor=async(req,res)=>{
     try{
         const proveedores= await proveedor.findAll({where:{Estado:true}})
+        console.log(proveedores)
         res.status(200).json(proveedores);
     }catch(error){
         res.status(500).json({err:error.message})

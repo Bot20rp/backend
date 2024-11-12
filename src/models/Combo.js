@@ -27,6 +27,9 @@ const Combo = db.define('Combo', {
         type: DataTypes.INTEGER,
         allowNull: false,
         defaultValue: 1  // 1 para activo, 0 para inactivo
+    },
+    DirImagen:{
+        type:DataTypes.STRING(255)
     }
 }, {
     tableName: 'Combo',

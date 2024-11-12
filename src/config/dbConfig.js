@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 // Cargar variables de entorno desde el archivo .env
 dotenv.config({ path: '.env' });
 
+
 // Crear la conexión a la base de datos
 export const db = new Sequelize(
   process.env.DB_NAME || 'Licoreria',

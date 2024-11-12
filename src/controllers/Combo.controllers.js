@@ -1,8 +1,17 @@
 import Combo from '../models/Combo.js';
 import DetalleCombo from '../models/DetalleCombo.js';
-import Producto from '../models/Producto.js'; // Asegúrate de importar el modelo Producto
+import Producto from '../models/Producto.js'; 
 import { createBitacora } from './bitacora.controllers.js';
-import bitacora from '../models/Bitacora.js';
+import { renombrarImagenes } from '../libs/helpers.js';
+export const prueba= async (req,res)=>{
+    try {
+        console.log(req.file)
+        res.status(200).json({msg:"imagen guardada"})
+    } catch (error) {
+        console.log(error)
+        res.status(200).json({err:error.message})
+    }
+}
 
 // Función para insertar un nuevo combo con sus productos
 export const createCombo = async (req, res) => {
@@ -15,7 +24,6 @@ export const createCombo = async (req, res) => {
         if (!Descripcion || !FechaInicio || !FechaFin || !Precio || !productos || !Array.isArray(productos) || productos.length === 0) {
             return res.status(400).json({ message: 'Todos los campos son obligatorios, incluyendo al menos un producto.' });
         }
-
         // Crear el nuevo combo
         const newCombo = await Combo.create({
             Descripcion,
@@ -24,7 +32,10 @@ export const createCombo = async (req, res) => {
             Precio,
             Estado: Estado || 1
         });
+        const idCombo=newCombo.ComboID;
+        const DirImagen= renombrarImagenes(req.file.filename,idCombo,'combo_')
 
+        await Combo.update({DirImagen},{where:{ComboID:idCombo}})
         // Insertar productos en DetalleCombo, incluyendo cantidad
         const detalles = productos.map(producto => ({
             ComboID: newCombo.ComboID,
@@ -51,7 +62,9 @@ export const createCombo = async (req, res) => {
 
 export const getCombos = async (req, res) => {
     try {
-        const combos = await Combo.findAll({
+        console.log(req.protocol)
+        console.log(req.get('host'))
+        let combos = await Combo.findAll({
             include: [
                 {
                     model: DetalleCombo,
@@ -64,9 +77,14 @@ export const getCombos = async (req, res) => {
                     attributes: [] // Opcional
                 }
             ],
-            attributes: ['ComboID', 'Descripcion', 'FechaInicio', 'FechaFin', 'Precio', 'Estado']
+            attributes: ['ComboID', 'Descripcion', 'FechaInicio', 'FechaFin', 'Precio', 'Estado','DirImagen']
         });
-
+        console.log(combos)
+        combos=combos.map((combo)=>(
+            {
+                ...combo.toJSON(),DirImagen:combo.DirImagen?`${req.protocol}://${req.get('host')}/images/${combo.DirImagen}`:null
+            }
+        ))
         if (!combos.length) {
             return res.status(404).json({ message: 'No se encontraron combos.' });
         }

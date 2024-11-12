@@ -1,4 +1,7 @@
 import express from "express";
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import morgan from "morgan"
 import cors from "cors"; 
 import router from "./src/routes/auth.routes.js";
@@ -23,6 +26,9 @@ import routerStripe from "./src/routes/stripe.routes.js";
 const app = express();
 rundb();
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+app.use('/images', express.static(path.join(__dirname, 'src/libs/image')));
 app.use(cors({
     origin: 'https://eclectic-fox-653ba4.netlify.app',
     credentials: true,

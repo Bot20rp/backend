@@ -40,6 +40,9 @@ const producto= db.define('producto',{
     },
     Estado:{
         type:DataTypes.TINYINT
+    },
+    DirImagen:{
+        type:DataTypes.STRING(255)
     }
 },{
     tableName:'Producto',

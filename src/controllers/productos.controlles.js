@@ -1,6 +1,7 @@
 import producto, { createProducto, obtProducto, actProducto } from "../models/Producto.js";
 import CantidadVolumen from "../models/CantidadVolumen.js";
 import { createBitacora } from "./bitacora.controllers.js";
+import { renombrarImagenes } from "../libs/helpers.js";
 
 export const registrarProducto = async (req, res) => {
     // const {Nombre,Precio,Volumen,Marca,Estante,CategoriaID}=req.body
@@ -36,6 +37,10 @@ export const registerProducto = async (req, res) => {
             CategoriaID: parseInt(Categoria),
             Estado: 1 // Estado activo por defecto
         });
+        //añadiendo el nombre de la imagen
+        const idProd=newProducto.ProductoID;
+        const DirImagen=renombrarImagenes(req.file.filename,idProd,"producto_")
+        await producto.update({DirImagen},{where :{ProductoID:idProd}})
 
         // Asociar el volumen con el producto en la tabla intermedia CantidadVolumen
         await CantidadVolumen.create({
@@ -62,7 +67,11 @@ export const getProducto = async (req, res) => {
     // const {Nombre,Precio,MarcaID,Estante,Categoria,Volumen}=req.body
     console.log(req.body)
     try {
-        const productos = await obtProducto()
+        let productos = await obtProducto()
+        console.log(productos);
+        productos=productos.map((producto)=>({
+            ...producto,DirImagen:producto.DirImagen?`${req.protocol}://${req.get('host')}/images/${producto.DirImagen}`:null
+        }))
         res.status(200).json(productos)
     } catch (error) {
         res.status(500).json({ err: error.message })

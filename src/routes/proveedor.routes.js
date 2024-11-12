@@ -3,7 +3,7 @@ import { registrarProveedor,getProveedor,getProveedorById,updateProveedor,delete
 import { authenticateToken } from "../controllers/auth.controllers.js";
 const router=Router();
 //CRUD
-router.get('/proveedor',authenticateToken,getProveedor);
+router.get('/proveedor',getProveedor);
 router.get('/proveedor/:id',getProveedorById);
 router.post('/proveedor',authenticateToken,registrarProveedor);
 router.post('/proveedor/ex',getProveedorIdByName);
