@@ -28,8 +28,9 @@ export const getTipoVenta= async (req, res)=>{
 }
 
 export const crearFactura = async (req, res) => {
+  console.log(req.body.data)
   try {
-    const { clienteID, productos, fecha, tipoVenta, totalVenta, pagoEfectivo, pagoQr, pagoTarjeta } = req.body;
+    const { clienteID, productos, fecha, tipoVenta, totalVenta, pagoEfectivo, pagoQr, pagoTarjeta } = req.body.data;
 
     // Obtener el último número de factura
     const ultimaFactura = await Factura.findOne({ order: [['NroFactura', 'DESC']] });
