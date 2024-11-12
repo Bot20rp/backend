@@ -50,6 +50,20 @@ export const crearFactura = async (req, res) => {
     const CodigoControl = codigoControlResult[0].CodigoControl; 
     const CodigoDeAutorizacion = codigoAutorizacionResult[0].CodigoDeAutorizacion;
 
+    // Obtener Apertura activa
+    const aperturasActivas = await Apertura.findAll({
+        where: {
+          FechaCierre: null,
+        },
+      });
+  
+      if (aperturasActivas.length === 0) {
+        return res.status(404).json({ message: "No hay aperturas activas" });
+      }
+  
+      // Seleccionamos la primera apertura activa
+      const aperturaID = aperturasActivas[0].AperturaID;
+
     // Crear la factura
     const nuevaFactura = await Factura.create({
       NroFactura: nuevoNroFactura,
@@ -93,7 +107,7 @@ export const crearFactura = async (req, res) => {
         TipoPagoID: 1, // ID de Efectivo
         NotaVentaID: nuevaNotaVenta.NotaVentaID,
         Monto: pagoEfectivo,
-        AperturaID: req.aperturaID, // O el ID actual de la apertura
+        AperturaID: aperturaID, // O el ID actual de la apertura
       });
     }
     if (pagoQr > 0) {
@@ -101,7 +115,7 @@ export const crearFactura = async (req, res) => {
         TipoPagoID: 2, // ID de QR
         NotaVentaID: nuevaNotaVenta.NotaVentaID,
         Monto: pagoQr,
-        AperturaID: req.aperturaID,
+        AperturaID: aperturaID,
       });
     }
     if (pagoTarjeta > 0) {
@@ -109,7 +123,7 @@ export const crearFactura = async (req, res) => {
         TipoPagoID: 3, // ID de Tarjeta
         NotaVentaID: nuevaNotaVenta.NotaVentaID,
         Monto: pagoTarjeta,
-        AperturaID: req.aperturaID,
+        AperturaID: aperturaID,
       });
     }
 
