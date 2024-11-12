@@ -23,6 +23,7 @@ import Transaccion from './Transaccion.js';
 import Apertura from './Apertura.js';
 import TipoPago from './TipoPago.js';
 import VentaCombo from './VentaCombo.js';
+import Suministro from './Suministro.js';
 
 
 
@@ -101,7 +102,13 @@ NotaVenta.hasMany(VentaCombo, { foreignKey: 'NotaVentaID' });
 VentaCombo.belongsTo(Combo, { foreignKey: 'ComboID' });
 VentaCombo.belongsTo(NotaVenta, { foreignKey: 'NotaVentaID' });
 
+// relacion producto suministro
+Producto.hasOne(Suministro, {
+    foreignKey: 'ProductoID',
+    onDelete: 'CASCADE'
+  });
+  Suministro.belongsTo(Producto, { foreignKey: 'ProductoID' });
 
 export {Usuario, Documento, Telefono, DetalleDocumento,Empleado,DetalleCombo,Combo,Producto,facturaCompra,almacenamiento,proveedor,
-    estante,marca,Categoria,Volumen, Factura,cliente,TipoVenta,NotaVenta, DetalleVenta,TipoPago, VentaCombo
+    estante,marca,Categoria,Volumen, Factura,cliente,TipoVenta,NotaVenta, DetalleVenta,TipoPago, VentaCombo,Suministro
 };

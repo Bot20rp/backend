@@ -28,4 +28,6 @@ const VentaCombo = db.define('VentaCombo', {
 });
 
 
+
+
 export default VentaCombo;

@@ -8,6 +8,7 @@ import TipoVenta from '../models/TipoVenta.js';
 import Apertura from "../models/Apertura.js";
 import { DataTypes } from 'sequelize';
 import { db } from '../config/dbConfig.js';
+import Suministro from "../models/Suministro.js";
 
 
 export const getTipoVenta= async (req, res)=>{
@@ -99,6 +100,18 @@ export const crearFactura = async (req, res) => {
         NotaVentaID: nuevaNotaVenta.NotaVentaID,
         cantidad: cantidad,
       });
+
+      const suministro = await Suministro.findOne({ where: { ProductoID: productoID } });
+      if (suministro) {
+        const nuevaCantidadSaldo = suministro.CantidadSaldo - cantidad;
+        if (nuevaCantidadSaldo < 0) {
+          return res.status(400).json({ message: `No hay suficiente suministro para el producto con ID ${productoID}` });
+        }
+    
+        // Actualizar el saldo en Suministro
+        await suministro.update({ CantidadSaldo: nuevaCantidadSaldo });
+      }
+
     }
 
     // Registrar transacciones para los diferentes tipos de pago
