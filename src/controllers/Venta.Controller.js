@@ -108,11 +108,12 @@ export const crearFactura = async (req, res) => {
         if (nuevaCantidadSaldo < 0) {
           return res.status(400).json({ message: `No hay suficiente suministro para el producto con ID ${productoID}` });
         }
-    
+        console.log(`Actualizando suministro para ProductoID ${productoID} a CantidadSaldo: ${nuevaCantidadSaldo}`);
         // Actualizar el saldo en Suministro
         await suministro.update({ CantidadSaldo: nuevaCantidadSaldo });
+      }else {
+        console.warn(`Suministro no encontrado para ProductoID ${productoID}`);
       }
-
     }
 
     // Registrar transacciones para los diferentes tipos de pago
