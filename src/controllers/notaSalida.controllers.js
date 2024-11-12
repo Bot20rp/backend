@@ -2,7 +2,7 @@ import NotaSalida from "../models/NotaSalida.js";
 import TipoSalida from "../models/TipoSalida.js";
 
 
-const getTipoSalida=async (req,res)=>{
+export const getTipoSalida=async (req,res)=>{
     try {
         const tipoSalida= TipoSalida.findAll();
         res.status(200).json(tipoSalida);
