@@ -66,7 +66,7 @@ export const crearFactura = async (req, res) => {
     const nuevaNotaVenta = await NotaVenta.create({
       FacturaID: nuevaFactura.FacturaID,
       ClienteID: clienteID,
-      TipoVentaID: tipoVenta,
+      TipoVID: tipoVenta,
       Total: totalVenta,
     });
 
