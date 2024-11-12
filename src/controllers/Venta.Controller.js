@@ -89,7 +89,8 @@ export const crearFactura = async (req, res) => {
 
     // Procesar cada producto en el array de productos
     for (const producto of productos) {
-      const { productoID, cantidad } = producto;
+        const productoID = producto.id;
+      const {  cantidad } = producto;
 
       // Validar existencia del producto
       const productoExistente = await Producto.findByPk(productoID);
