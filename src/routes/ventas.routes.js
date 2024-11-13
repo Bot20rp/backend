@@ -1,5 +1,5 @@
 import {Router} from "express"
-import {getTipoVenta, crearFactura} from "../controllers/Venta.Controller.js"
+import {getTipoVenta, crearFactura} from "../controllers/Venta.controllers.js"
 
 
 const router = Router();
