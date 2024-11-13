@@ -8,6 +8,7 @@ import DetalleDocumento from "../models/DetalleDocumento.js";
 
 import PDFDocument from 'pdfkit';
 export const pdfFactura=async (req, res) => {
+    console.log(req.body)
     const {id}=req.body
   try {
 
