@@ -6,7 +6,7 @@ import TipoVenta from "../models/TipoVenta.js";
 import {Op} from "sequelize";
 
 export const getDetalleF = async (req, res) => {
-    const { fechaDesde, fechaHasta } = req.body;
+    const { fechaDesde, fechaHasta } = req.body.data;
   
     try {
 
