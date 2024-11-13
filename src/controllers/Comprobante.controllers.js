@@ -3,6 +3,7 @@ import NotaVenta from "../models/NotaVenta.js";
 import Cliente from "../models/Cliente.js";
 import Usuario from "../models/Usuario.js";
 import TipoVenta from "../models/TipoVenta.js";
+import {Op} from "sequelize";
 
 export const getComprobantes = async (req, res) => {
     const { fechaDesde, fechaHasta } = req.body;
