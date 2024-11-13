@@ -80,7 +80,8 @@ Producto.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
 NotaVenta.belongsTo(cliente, { foreignKey: 'ClienteID' });
 NotaVenta.belongsTo(Factura, { foreignKey: 'FacturaID' });
 NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID' });
-
+// Relación de Factura hacia NotaVenta
+Factura.hasOne(NotaVenta, { foreignKey: 'FacturaID' });
 //DetalleVenta
 // Definimos las relaciones
 Producto.hasMany(DetalleVenta, { foreignKey: 'ProductoID' });
