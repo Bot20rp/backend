@@ -6,10 +6,10 @@ import Telefono from '../models/Telefono.js';
 
 
 export const registrarCliente = async (req, res) => {
-  const { Nombre, Correo, Contrasena, FechaNacimiento, Sexo,NumeroDocumento,telefono} = req.body;
+  const { Nombre, Correo, Contrasena, FechaNacimiento, Sexo,NIT,CI,telefono} = req.body;
 
   // Validar que todos los campos necesarios estén presentes
-  if (!Nombre || !Correo || !Contrasena || !FechaNacimiento || !Sexo || !NumeroDocumento || !telefono) {
+  if (!Nombre || !Correo || !Contrasena || !FechaNacimiento || !Sexo || !CI || !telefono) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
@@ -33,15 +33,39 @@ export const registrarCliente = async (req, res) => {
       Contrasena: hashedPassword,
       FechaNacimiento,
       Sexo,
-      RolID: 3, // Rol de cliente
+      RolID: 1, // Rol de cliente
     });
 
     // Asociar el número de documento al usuario
-    await DetalleDocumento.create({
-        UsuarioID: nuevoUsuario.UsuarioID,
-        DocumentoID: tipoDocumento.DocumentoID,
-        NumeroDocumento,
-      });
+    if (CI){
+      const tipoDocumentCI= await Documento.findOne({
+        where:{tipoDocumento:'Cédula de Identidad'}
+    });
+    if(tipoDocumentCI){
+      await DetalleDocumento.create({
+        UsuarioID: nuevoUsuario.UsuarioID, 
+        DocumentoID: tipoDocumentCI.DocumentoID,
+        NumeroDocumento:CI,
+      })
+    }else{
+      return res.status(400).json({message:'fallo con el tipo de documento cedula'}); 
+    }
+    }
+
+    if (NIT){
+      const tipoDocumentCI= await Documento.findOne({
+        where:{tipoDocumento:'NIT'}
+    });
+    if(tipoDocumentCI){
+      await DetalleDocumento.create({
+        UsuarioID: nuevoUsuario.UsuarioID, 
+        DocumentoID: tipoDocumentCI.DocumentoID,
+        NumeroDocumento:NIT,
+      })
+    }else{
+      return res.status(400).json({message:'fallo con el tipo de documento NIT'}); 
+    }
+    }
 
     await Telefono.create({
         Nro: telefono,  // Usar el número de teléfono proporcionado

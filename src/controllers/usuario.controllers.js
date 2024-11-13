@@ -52,7 +52,9 @@ export const obtenerUsuariosConDetalles= async (req, res) => {
       salario: usuario.Empleado?.Salario || 'No registrado',  // Mostrar salario o 'No registrado'
       horarioInicio: usuario.Empleado?.HorarioInicio || 'No registrado' ,// Mostrar horario laboral o 'No registrado'
       horarioFin: usuario.Empleado?.HorarioFin || 'No registrado',// Mostrar horario laboral o 'No registrado'
-      fechaNacimiento: usuario.FechaNacimiento // Mostrar horario laboral o 'No registrado'
+      fechaNacimiento: usuario.FechaNacimiento ,// Mostrar horario laboral o 'No registrado'
+      ci: usuario.DetalleDocumentos && usuario.DetalleDocumentos[0] ? usuario.DetalleDocumentos[0].NumeroDocumento : 'No registrado', // Validación de existencia
+      nit: usuario.DetalleDocumentos && usuario.DetalleDocumentos[1] ? usuario.DetalleDocumentos[1].NumeroDocumento : 'No registrado', // Validación de existencia
     }));
 
     res.status(200).json({

@@ -77,4 +77,5 @@ export const actProducto= async ({id,Nombre,Precio,Volumen,Marca,Estante, Catego
     }
 }
 
+
 export default producto;
