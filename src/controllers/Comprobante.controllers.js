@@ -5,7 +5,7 @@ import Usuario from "../models/Usuario.js";
 import TipoVenta from "../models/TipoVenta.js";
 import {Op} from "sequelize";
 
-export const getComprobantes = async (req, res) => {
+export const getComprobantes = async (req, res) =>{
     console.log(req.body.data)
     const { fechaDesde, fechaHasta } = req.body.data;
   

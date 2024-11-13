@@ -14,7 +14,7 @@ export const pdfFactura=async (req, res) => {
     
     const factura=await Factura.findOne({
         where:{
-            FacturaID:parseInt(req.params.id)
+            FacturaID:parseInt(id)
         },
         include:[
             {
