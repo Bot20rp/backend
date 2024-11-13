@@ -76,10 +76,14 @@ Producto.belongsTo(marca, { foreignKey: 'MarcaID' });
 Producto.belongsTo(estante, { foreignKey: 'EstanteID' });
 Producto.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
 
-// Relaciones con las otras tablas
+
+// Definir relaciones con alias para evitar el problema de pluralización
 NotaVenta.belongsTo(cliente, { foreignKey: 'ClienteID' });
-NotaVenta.belongsTo(Factura, { foreignKey: 'FacturaID' });
-NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID' });
+NotaVenta.belongsTo(Factura, { foreignKey: 'FacturaID', as: 'Factura' });
+NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID', as: 'TipoVenta' }); // Definir alias explícito
+
+
+Factura.hasOne(NotaVenta, { foreignKey: 'FacturaID', as: 'NotaVenta' });
 
 //DetalleVenta
 // Definimos las relaciones
