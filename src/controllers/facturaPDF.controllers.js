@@ -10,6 +10,7 @@ import PDFDocument from 'pdfkit';
 export const pdfFactura=async (req, res) => {
     console.log(req.query)
     const {id}=req.query
+    console.log(id)
   try {
 
     
