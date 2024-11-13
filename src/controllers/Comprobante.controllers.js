@@ -5,7 +5,7 @@ import Usuario from "../models/Usuario.js";
 import TipoVenta from "../models/TipoVenta.js";
 
 export const getComprobantes = async (req, res) => {
-    const { fechaDesde, fechaHasta } = req.query;
+    const { fechaDesde, fechaHasta } = req.body;
   
     try {
       // Obtener las facturas dentro del rango de fechas
