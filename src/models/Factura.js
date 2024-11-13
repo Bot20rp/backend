@@ -3,6 +3,7 @@
 import { DataTypes } from 'sequelize';
 import { db } from '../config/dbConfig.js';
 
+
 const Factura = db.define('Factura', {
     FacturaID: {
         type: DataTypes.INTEGER,
