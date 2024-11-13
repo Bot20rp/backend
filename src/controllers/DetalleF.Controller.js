@@ -57,3 +57,23 @@ export const getDetalleF = async (req, res) => {
       res.status(500).json({ message: "Error al obtener facturas." });
     }
   };
+
+
+  export const anularFactura = async (req, res) => {
+    const { nroFactura } = req.body.data;
+
+    try {
+        const factura = await Factura.findOne({ where: { NroFactura: nroFactura } });
+        if (!factura) {
+            return res.status(404).json({ message: "Factura no encontrada" });
+        }
+
+        factura.Estado = false;
+        await factura.save();
+
+        res.status(200).json({ message: "Factura anulada exitosamente" });
+    } catch (error) {
+        console.error("Error al anular la factura:", error);
+        res.status(500).json({ message: "Error al anular la factura" });
+    }
+};
