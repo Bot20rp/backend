@@ -5,12 +5,11 @@ import Usuario from "../models/Usuario.js";
 import TipoVenta from "../models/TipoVenta.js";
 import {Op} from "sequelize";
 
-export const getComprobantes = async (req, res) => {
-    console.log(req.body.data)
+export const getDetalleF = async (req, res) => {
     const { fechaDesde, fechaHasta } = req.body.data;
   
     try {
-      // Obtener las facturas dentro del rango de fechas
+
       const facturas = await Factura.findAll({
         where: {
           Fecha: {
@@ -43,14 +42,13 @@ export const getComprobantes = async (req, res) => {
           },
         ],
       });
-  
-      // Mapear los resultados para simplificar el formato de respuesta
       const resultado = facturas.map(factura => ({
         tipoVenta: factura.NotaVenta.TipoVenta.Nombre,
         fecha: factura.Fecha,
         comprobante: factura.NroFactura,
         cliente: factura.NotaVenta.Cliente.Usuario.Nombre,
         montoTotal: factura.NotaVenta.Total,
+        estado: factura.Estado, 
       }));
   
       res.status(200).json(resultado);
@@ -59,3 +57,23 @@ export const getComprobantes = async (req, res) => {
       res.status(500).json({ message: "Error al obtener facturas." });
     }
   };
+
+
+  export const anularFactura = async (req, res) => {
+    const { nroFactura } = req.body.data;
+
+    try {
+        const factura = await Factura.findOne({ where: { NroFactura: nroFactura } });
+        if (!factura) {
+            return res.status(404).json({ message: "Factura no encontrada" });
+        }
+
+        factura.Estado = false;
+        await factura.save();
+
+        res.status(200).json({ message: "Factura anulada exitosamente" });
+    } catch (error) {
+        console.error("Error al anular la factura:", error);
+        res.status(500).json({ message: "Error al anular la factura" });
+    }
+};
