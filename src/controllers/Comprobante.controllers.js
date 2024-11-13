@@ -6,7 +6,8 @@ import TipoVenta from "../models/TipoVenta.js";
 import {Op} from "sequelize";
 
 export const getComprobantes = async (req, res) => {
-    const { fechaDesde, fechaHasta } = req.body;
+    console.log(req.body.data)
+    const { fechaDesde, fechaHasta } = req.body.data;
   
     try {
       // Obtener las facturas dentro del rango de fechas
