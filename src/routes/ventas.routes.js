@@ -7,5 +7,5 @@ const router = Router();
 
 router.get('/getVentas',getTipoVenta); 
 router.post('/Factura',crearFactura);
-router.post('/pdf',pdfFactura)
+router.get('/pdf',pdfFactura)
 export default router;
