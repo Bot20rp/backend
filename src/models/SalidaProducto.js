@@ -28,3 +28,4 @@ const salidaProducto=db.define('SalidaProducto',{
     tableName:'SalidaProducto',
     timestamps:false
 })
+export default salidaProducto;

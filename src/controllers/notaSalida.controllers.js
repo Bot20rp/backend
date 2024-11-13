@@ -1,5 +1,8 @@
 import NotaSalida from "../models/NotaSalida.js";
 import TipoSalida from "../models/TipoSalida.js";
+import SalidaProducto from "../models/SalidaProducto.js";
+import Suministro from "../models/Suministro.js";
+import Producto from "../models/Producto.js";
 
 // obtiene los tipos de salida 
 export const getTipoSalida=async (req,res)=>{
@@ -22,8 +25,24 @@ export const registrarNotaSalida=async (req,res)=>{
         const detalleSalidaProducto=productos.map((producto)=>({
             ...producto,NotaSalidaID:notaSalida.NotaSalidaID
         }))
+
+        for(const producto of detalleSalidaProducto){
+            const {Cantidad,idProd,NotaSalidaID}=producto;
+            const existeProducto=await Producto.findByPk(parseInt(idProd))
+            if(!existeProducto) continue;
+
+            const suministro= await  Suministro.findOne({where :{ProductoID:parseInt(idProd)}})
+            if(!suministro || !suministro.CantidadSaldo>=parseInt(Cantidad)){
+                return res.status(404).json({msg:"Producto no encontrado o cantidad insuficiente"})
+            }
+            await SalidaProducto.create({NotaSalidaID,ProductoID:idProd,Cantidad});
+            suministro.CantidadSaldo -=parseInt(Cantidad);
+            await suministro.save();
+                    
+        }
         res.status(200).json({msg:"Nota salida registrada"})
     } catch (error) {
         res.status(500).json({err:error.message})
     }
 }
+
