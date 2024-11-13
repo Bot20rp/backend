@@ -1,6 +1,8 @@
 import NotaSalida from "../models/NotaSalida.js";
 import TipoSalida from "../models/TipoSalida.js";
 import SalidaProducto from "../models/SalidaProducto.js";
+import Suministro from "../models/Suministro.js";
+import Suministro from "../models/Suministro.js";
 
 // obtiene los tipos de salida 
 export const getTipoSalida=async (req,res)=>{
@@ -23,9 +25,15 @@ export const registrarNotaSalida=async (req,res)=>{
         const detalleSalidaProducto=productos.map((producto)=>({
             ...producto,NotaSalidaID:notaSalida.NotaSalidaID
         }))
+
+        for(const producto of detalleSalidaProducto){
+            await SalidaProducto.create(producto);
+            const product= Producto.findByPk()
+        }
         SalidaProducto.bulkCreate(detalleSalidaProducto);
         res.status(200).json({msg:"Nota salida registrada"})
     } catch (error) {
         res.status(500).json({err:error.message})
     }
 }
+
