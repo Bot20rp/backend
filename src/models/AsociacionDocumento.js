@@ -80,7 +80,8 @@ Producto.belongsTo(Categoria, { foreignKey: 'CategoriaID' });
 // Definir relaciones con alias para evitar el problema de pluralización
 NotaVenta.belongsTo(cliente, { foreignKey: 'ClienteID' });
 NotaVenta.belongsTo(Factura, { foreignKey: 'FacturaID', as: 'Factura' });
-NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID' });
+NotaVenta.belongsTo(TipoVenta, { foreignKey: 'TipoVID', as: 'TipoVenta' }); // Definir alias explícito
+
 
 Factura.hasOne(NotaVenta, { foreignKey: 'FacturaID', as: 'NotaVenta' });
 
