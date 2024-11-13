@@ -1,0 +1,59 @@
+import Factura from "../models/Factura.js";
+import NotaVenta from "../models/NotaVenta.js";
+import Cliente from "../models/Cliente.js";
+import Usuario from "../models/Usuario.js";
+import TipoVenta from "../models/TipoVenta.js";
+
+export const getComprobantes = async (req, res) => {
+    const { fechaDesde, fechaHasta } = req.query;
+  
+    try {
+      // Obtener las facturas dentro del rango de fechas
+      const facturas = await Factura.findAll({
+        where: {
+          Fecha: {
+            [Op.between]: [fechaDesde, fechaHasta],
+          },
+        },
+        include: [
+          {
+            model: NotaVenta,
+            as: 'NotaVenta',
+            attributes: ['Total'],
+            include: [
+              {
+                model: Cliente,
+                as: 'Cliente',
+                include: [
+                  {
+                    model: Usuario,
+                    as: 'Usuario',
+                    attributes: ['Nombre'],
+                  },
+                ],
+              },
+              {
+                model: TipoVenta,
+                as: 'TipoVenta',
+                attributes: ['Nombre'],
+              },
+            ],
+          },
+        ],
+      });
+  
+      // Mapear los resultados para simplificar el formato de respuesta
+      const resultado = facturas.map(factura => ({
+        tipoVenta: factura.NotaVenta.TipoVenta.Nombre,
+        fecha: factura.Fecha,
+        comprobante: factura.NroFactura,
+        cliente: factura.NotaVenta.Cliente.Usuario.Nombre,
+        montoTotal: factura.NotaVenta.Total,
+      }));
+  
+      res.status(200).json(resultado);
+    } catch (error) {
+      console.error("Error al obtener facturas:", error);
+      res.status(500).json({ message: "Error al obtener facturas." });
+    }
+  };

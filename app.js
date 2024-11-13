@@ -26,6 +26,7 @@ import routerStripe from "./src/routes/stripe.routes.js";
 import routerApertura from "./src/routes/apertura.routes.js";
 import routesVentas from "./src/routes/ventas.routes.js";
 import routerNotaSalida from "./src/routes/NotaSalida.routes.js";
+import routerComprobantes from "./src/routes/Comprobante.routes.js"
 const app = express();
 rundb();
 
@@ -62,6 +63,7 @@ app.use("/api",routerVolu)
 app.use("/api",routerStripe);
 app.use("/api",routerApertura);
 app.use("/api",routesVentas)
-app.use("/api",routerNotaSalida)
+app.use("/api",routerNotaSalida); 
+app.use("/api",routerComprobantes)
 
 export default app;
