@@ -4,7 +4,7 @@ import DetalleVenta from "../models/DetalleVenta.js";
 import Producto from "../models/Producto.js";
 import Usuario from "../models/Usuario.js"; 
 import Cliente from "../models/Cliente.js";
-
+import DetalleDocumento from "../models/DetalleDocumento.js";
 
 import PDFDocument from 'pdfkit';
 export const pdfFactura=async (req, res) => {
@@ -14,7 +14,7 @@ export const pdfFactura=async (req, res) => {
     
     const factura=await Factura.findOne({
         where:{
-            FacturaID:parseInt(id)
+            FacturaID:parseInt(req.params.id)
         },
         include:[
             {
@@ -26,7 +26,14 @@ export const pdfFactura=async (req, res) => {
                         include:[
                             {
                                 model:Usuario,
-                                attributes:['Nombre','UsuarioID']
+                                attributes:['Nombre','UsuarioID'],
+                                include:[
+                                    {
+                                        model:DetalleDocumento,
+                                        as:'DetalleDocumentos',
+                                        attributes:['NumeroDocumento','DocumentoID']
+                                    }
+                                ]
                             }
                         ]
                     },{
@@ -50,10 +57,12 @@ const producto=factura.NotaVenta.DetalleVenta.map((obj)=>({
     precio:obj.producto.Precio,
     cantidad:obj.cantidad
 }))
+const docu=factura.NotaVenta.Cliente.Usuario.DetalleDocumentos;
 const result={           
     NroFactura:factura.NroFactura,
     FechaEmision:factura.Fecha,
     NIT:factura.NIT,
+    Documento: (docu[1])?docu[1].NumeroDocumento:docu[0].NumeroDocumento           ,///puede ser CI o nit elcliente
     Detalle:factura.Detalle,
     CodigoControl:factura.CodigoControl,       
     CodigoCliente:factura.NotaVenta.Cliente.Usuario.UsuarioID,
@@ -86,7 +95,7 @@ const result={
       
     // Información de la empresa y cliente
     doc.text(`Nombre/Razón: ${result.cliente}`, { align: 'left' });
-    doc.text(`NIT/CI: 465456465465`, { align: 'left' });
+    doc.text(`NIT/CI: ${result.Documento}`, { align: 'left' });
     doc.text(`Cod. Cliente:   ${result.CodigoCliente} `, { align: 'left' })
     doc.text(`Fecha de Emisión: ${result.FechaEmision}`, { align: 'left' })
     .text('---------------------------------------------------------------------', { align: 'center' })
@@ -195,7 +204,14 @@ export const  getFacturaByID=async (req,res)=>{
                             include:[
                                 {
                                     model:Usuario,
-                                    attributes:['Nombre','UsuarioID']
+                                    attributes:['Nombre','UsuarioID'],
+                                    include:[
+                                        {
+                                            model:DetalleDocumento,
+                                            as:'DetalleDocumentos',
+                                            attributes:['NumeroDocumento','DocumentoID']
+                                        }
+                                    ]
                                 }
                             ]
                         },{
@@ -219,11 +235,13 @@ export const  getFacturaByID=async (req,res)=>{
             precio:obj.producto.Precio,
             cantidad:obj.cantidad
         }))
+        const docu=factura.NotaVenta.Cliente.Usuario.DetalleDocumentos;
         const result={           
             NroFactura:factura.NroFactura,
             FechaEmision:factura.Fecha,
             NIT:factura.NIT,
             Detalle:factura.Detalle,
+            Documento:(docu[1])?docu[1].NumeroDocumento:docu[0].NumeroDocumento,
             CodigoControl:factura.CodigoControl,       
             CodigoCliente:factura.NotaVenta.Cliente.Usuario.UsuarioID,
             cliente:factura.NotaVenta.Cliente.Usuario.Nombre,
