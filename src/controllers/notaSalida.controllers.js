@@ -28,16 +28,16 @@ export const registrarNotaSalida=async (req,res)=>{
         }))
 
         for(const producto of detalleSalidaProducto){
-            const {Cantidad,id,NotaSalidaID}=producto;
+            const {cantidad,id,NotaSalidaID}=producto;
             const existeProducto=await Producto.findByPk(parseInt(id))
             if(!existeProducto) continue;
 
             const suministro= await  Suministro.findOne({where :{ProductoID:parseInt(id)}})
-            if(!suministro || !suministro.CantidadSaldo>=parseInt(Cantidad)){
+            if(!suministro || !suministro.CantidadSaldo>=parseInt(cantidad)){
                 return res.status(404).json({msg:"Producto no encontrado o cantidad insuficiente"})
             }
-            await SalidaProducto.create({NotaSalidaID,ProductoID:id,Cantidad});
-            suministro.CantidadSaldo -=parseInt(Cantidad);
+            await SalidaProducto.create({NotaSalidaID,ProductoID:id,Cantidad:cantidad});
+            suministro.CantidadSaldo -=parseInt(cantidad);
             await suministro.save();
                     
         }
