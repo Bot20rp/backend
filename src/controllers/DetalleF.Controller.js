@@ -49,6 +49,7 @@ export const getDetalleF = async (req, res) => {
         cliente: factura.NotaVenta.Cliente.Usuario.Nombre,
         montoTotal: factura.NotaVenta.Total,
         estado: factura.Estado, 
+
       }));
   
       res.status(200).json(resultado);
@@ -60,6 +61,8 @@ export const getDetalleF = async (req, res) => {
 
 
   export const anularFactura = async (req, res) => {
+
+    console.log(req.body.data)
     const { nroFactura } = req.body.data;
 
     try {
