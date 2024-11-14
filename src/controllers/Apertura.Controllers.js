@@ -11,7 +11,7 @@ export const InicoApertura = async (req, res)=>{
             where :{FechaCierre:null}
         });
         if (aperturaActiva){
-            return res.status(400).json({message:"ya hay una apertura activa"});
+            return res.status(204).json({message:"ya hay una apertura activa"});
         }
 
         const nuevaApertura =await Apertura.create({
@@ -88,7 +88,7 @@ export const ObtenerAperturaActivas = async (req, res)=>{
         })
 
         if (aperturasActivas.length==0){
-            return res.status(404).json({message:"No hay aperturas activas"}); 
+            return res.status(204).json({message:"No hay aperturas activas"}); 
         }
 
         res.status(200).json({

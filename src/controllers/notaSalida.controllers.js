@@ -16,7 +16,8 @@ export const getTipoSalida=async (req,res)=>{
 
 //implementacion para nota de salidas
 export const registrarNotaSalida=async (req,res)=>{
-    const {TipoSalidaID,Fecha,productos}=req.body
+    console.log(req.body.data)
+    const {TipoSalidaID,Fecha,productos}=req.body.data
     try {
         if(!TipoSalidaID || !Fecha || !Array.isArray(productos)|| !productos.length>0){
             return res.status(400).json({ message: 'Todos los campos son obligatorios, incluyendo al menos un producto.' });
