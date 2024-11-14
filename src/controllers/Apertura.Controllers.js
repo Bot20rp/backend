@@ -11,7 +11,7 @@ export const InicoApertura = async (req, res)=>{
             where :{FechaCierre:null}
         });
         if (aperturaActiva){
-            return res.status(400).json({message:"ya hay una apertura activa"});
+            return res.status(204).json({message:"ya hay una apertura activa"});
         }
 
         const nuevaApertura =await Apertura.create({
