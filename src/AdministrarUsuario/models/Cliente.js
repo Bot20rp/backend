@@ -10,6 +10,9 @@ const cliente =db.define('Cliente',{
             model: usuario,
             key: 'UsuarioID'
         }
+    },
+    Direccion:{
+        type:DataTypes.STRING(255)
     }
 }, {
     tableName: 'Cliente',
