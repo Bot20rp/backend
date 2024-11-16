@@ -1,7 +1,7 @@
 import {Router} from "express"
 
-import { obtenerUsuariosConDetalles, updateUsuarioG,deleteUsuarioG} from "../controllers/usuario.controllers.js";
-import { verifyToken1 } from "../controllers/auth.controllers.js";
+import { obtenerUsuariosConDetalles, updateUsuarioG,deleteUsuarioG,obtenerUsuarioPorID} from "../controllers/usuario.controllers.js";
+import { verifyToken1 ,verifyToken} from "../controllers/auth.controllers.js";
 
 const router = Router();
 // Ruta para registrar un usuario
@@ -9,5 +9,6 @@ const router = Router();
 router.get('/obtener',obtenerUsuariosConDetalles); 
 router.patch('/usuario/actualizar',verifyToken1,updateUsuarioG);
 router.delete('/usuario/del',verifyToken1,deleteUsuarioG);
+router.get('/obtenerPorID',verifyToken,obtenerUsuarioPorID)
 
 export default router;

@@ -3,6 +3,7 @@ import Rol from '../models/Rol.js';
 import Administrador from "../models/Administrador.js";
 import Cliente from '../models/Cliente.js';
 import { createBitacora } from './bitacora.controllers.js';
+import jwt from 'jsonwebtoken';
 
 
 export const obtenerUsuariosConDetalles= async (req, res) => {
@@ -234,5 +235,82 @@ export const deleteUsuarioG=async (req,res)=>{
      }
   }catch(error){
       res.status(500).json({err:error.message})
+  }
+};
+
+export const obtenerUsuarioPorID = async (req, res) => {
+  try {
+    // Extraer el token de la cabecera
+    const token = req.headers['authorization'];
+    if (!token) {
+      return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    // Verificar y decodificar el token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const UsuarioID = decoded.id; // Asegúrate de que el token contenga el ID del usuario
+
+    // Consultar al usuario por su ID
+    const usuario = await Usuario.findOne({
+      attributes: ['UsuarioID', 'Nombre', 'Correo', 'Sexo', 'FechaNacimiento'], // Excluir contraseña
+      where: { UsuarioID, Estado: true }, // Asegurarse de que el usuario esté activo
+      include: [
+        {
+          model: DetalleDocumento,
+          as: 'DetalleDocumentos',
+          attributes: ['NumeroDocumento'],
+          include: [
+            {
+              model: Documento,
+              as: 'Documento',
+              attributes: ['TipoDocumento'],
+            },
+          ],
+        },
+        {
+          model: Telefono,
+          as: 'Telefonos',
+          attributes: ['Nro'],
+        },
+        {
+          model: Rol,
+          as: 'Rol',
+          attributes: ['Nombre'],
+        },
+        {
+          model: Empleado,
+          as: 'Empleado',
+          attributes: ['Salario', 'HorarioInicio', 'HorarioFin'],
+        },
+      ],
+    });
+
+    if (!usuario) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    // Formatear los datos del usuario
+    const usuarioFormateado = {
+      id: usuario.UsuarioID,
+      usuario: usuario.Nombre,
+      correo: usuario.Correo,
+      telefono: usuario.Telefonos[0]?.Nro || 'No registrado',
+      genero: usuario.Sexo === 'M' ? 'Masculino' : 'Femenino',
+      rol: usuario.Rol?.Nombre || 'No asignado',
+      salario: usuario.Empleado?.Salario || 'No registrado',
+      horarioInicio: usuario.Empleado?.HorarioInicio || 'No registrado',
+      horarioFin: usuario.Empleado?.HorarioFin || 'No registrado',
+      fechaNacimiento: usuario.FechaNacimiento,
+      ci: usuario.DetalleDocumentos?.[0]?.NumeroDocumento || 'No registrado',
+      nit: usuario.DetalleDocumentos?.[1]?.NumeroDocumento || 'No registrado',
+    };
+
+    res.status(200).json({
+      message: 'Usuario obtenido exitosamente',
+      usuario: usuarioFormateado,
+    });
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    res.status(500).json({ message: 'Error al obtener el usuario', error: error.message });
   }
 };
