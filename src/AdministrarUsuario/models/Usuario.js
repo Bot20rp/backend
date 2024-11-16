@@ -22,7 +22,7 @@ const usuario = db.define('Usuario', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    Sexo:{
+    sexo:{
         type:DataTypes.CHAR,
         allowNull:false
     },

@@ -272,16 +272,6 @@ export const obtenerUsuarioPorID = async (req, res) => {
           as: 'Telefonos',
           attributes: ['Nro'],
         },
-        {
-          model: Rol,
-          as: 'Rol',
-          attributes: ['Nombre'],
-        },
-        {
-          model: Empleado,
-          as: 'Empleado',
-          attributes: ['Salario', 'HorarioInicio', 'HorarioFin'],
-        },
       ],
     });
 
@@ -291,15 +281,10 @@ export const obtenerUsuarioPorID = async (req, res) => {
 
     // Formatear los datos del usuario
     const usuarioFormateado = {
-      id: usuario.UsuarioID,
       usuario: usuario.Nombre,
       correo: usuario.Correo,
       telefono: usuario.Telefonos[0]?.Nro || 'No registrado',
-      genero: usuario.Sexo === 'M' ? 'Masculino' : 'Femenino',
-      rol: usuario.Rol?.Nombre || 'No asignado',
-      salario: usuario.Empleado?.Salario || 'No registrado',
-      horarioInicio: usuario.Empleado?.HorarioInicio || 'No registrado',
-      horarioFin: usuario.Empleado?.HorarioFin || 'No registrado',
+      genero: usuario.sexo === 'M' ? 'Masculino' : 'Femenino',
       fechaNacimiento: usuario.FechaNacimiento,
       ci: usuario.DetalleDocumentos?.[0]?.NumeroDocumento || 'No registrado',
       nit: usuario.DetalleDocumentos?.[1]?.NumeroDocumento || 'No registrado',
