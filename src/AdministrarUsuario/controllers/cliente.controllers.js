@@ -3,13 +3,14 @@ import Documento from '../models/Documento.js';
 import DetalleDocumento from '../models/DetalleDocumento.js';
 import bcrypt from 'bcryptjs';
 import Telefono from '../models/Telefono.js';
+import cliente from '../models/Cliente.js';
 
 
 export const registrarCliente = async (req, res) => {
-  const { Nombre, Correo, Contrasena, FechaNacimiento, Sexo,NIT,CI,telefono} = req.body;
+  const { Nombre, Correo, Contrasena, FechaNacimiento, Sexo,NIT,CI,telefono,Direccion} = req.body;
 
   // Validar que todos los campos necesarios estén presentes
-  if (!Nombre || !Correo || !Contrasena || !FechaNacimiento || !Sexo || !CI || !telefono) {
+  if (!Nombre || !Correo || !Contrasena || !FechaNacimiento || !Sexo || !CI || !telefono || !Direccion) {
     return res.status(400).json({ message: 'Todos los campos son obligatorios' });
   }
 
@@ -71,7 +72,8 @@ export const registrarCliente = async (req, res) => {
         Nro: telefono,  // Usar el número de teléfono proporcionado
         UsuarioID: nuevoUsuario.UsuarioID,
     });
-
+    
+    await cliente.create({ClienteID:nuevoUsuario.UsuarioID,Direccion})
     res.status(201).json({
       message: 'Cliente registrado exitosamente',
       usuario: nuevoUsuario,
