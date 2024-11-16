@@ -284,11 +284,14 @@ export const obtenerUsuarioPorID = async (req, res) => {
       usuario: usuario.Nombre,
       correo: usuario.Correo,
       telefono: usuario.Telefonos[0]?.Nro || 'No registrado',
-      genero: usuario.sexo === 'M' ? 'Masculino' : 'Femenino',
+      genero: usuario.Sexo === 'M' ? 'Masculino' : 'Femenino',
       fechaNacimiento: usuario.FechaNacimiento,
       ci: usuario.DetalleDocumentos?.[0]?.NumeroDocumento || 'No registrado',
       nit: usuario.DetalleDocumentos?.[1]?.NumeroDocumento || 'No registrado',
     };
+
+    // Inspeccionar el objeto antes de enviarlo
+    console.log('Usuario formateado:', usuarioFormateado);
 
     res.status(200).json({
       message: 'Usuario obtenido exitosamente',
