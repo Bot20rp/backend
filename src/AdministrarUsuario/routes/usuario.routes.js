@@ -9,6 +9,6 @@ const router = Router();
 router.get('/obtener',obtenerUsuariosConDetalles); 
 router.patch('/usuario/actualizar',verifyToken1,updateUsuarioG);
 router.delete('/usuario/del',verifyToken1,deleteUsuarioG);
-router.get('/obtenerPorID',verifyToken,obtenerUsuarioPorID)
+router.get('/obtenerPorID',obtenerUsuarioPorID)
 
 export default router;
